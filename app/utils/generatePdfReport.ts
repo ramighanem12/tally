@@ -57,20 +57,6 @@ const LINE_SPACING = 12;
 //   doc.setGState(new (doc as any).GState({ opacity: 1 }));
 // };
 
-// Update the logo function to use public path
-const addLogoWithOptimization = async (doc: jsPDF, x: number, y: number, isWhite: boolean = false) => {
-  try {
-    const logoPath = isWhite 
-      ? process.cwd() + '/public/tally-logomark-white.png'
-      : process.cwd() + '/public/tally-official-logomark.png';
-    
-    doc.addImage(logoPath, 'PNG', x, y, 8, 8);
-  } catch (error) {
-    console.error('Error adding logo:', error);
-    // Continue without logo if there's an error
-  }
-};
-
 export const generatePdfReport = async (strategies: Strategy[]) => {
   // Create new PDF document in landscape orientation
   const doc = new jsPDF({
@@ -79,20 +65,17 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
     format: 'a4'
   });
 
-  // Add first logo at top left of page 1
-  await addLogoWithOptimization(doc, 20, 20);
-
   // Get page dimensions and calculate centers early
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
   const startX = pageWidth * 0.67;  // Start at right third
   const centerY = pageHeight / 2;
 
-  // Add diagonal lines pattern to right third (like page 5)
-  doc.setDrawColor(60, 88, 168); // Slightly lighter blue for pattern
-  doc.setLineWidth(0.25); // Very thin lines
+  // Add diagonal lines pattern to right third
+  doc.setDrawColor(60, 88, 168);
+  doc.setLineWidth(0.25);
 
-  // Draw diagonal lines pattern - use LINE_SPACING constant
+  // Draw diagonal lines pattern
   for (let i = -pageHeight; i < pageHeight * 2; i += LINE_SPACING) {
     doc.setGState(new (doc as any).GState({ opacity: 0.08 }));
     doc.line(
@@ -105,7 +88,7 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
   doc.setGState(new (doc as any).GState({ opacity: 1 }));
 
   // Add Assure Advisors text above header
-  doc.setFontSize(24); // 4px smaller than company name (28)
+  doc.setFontSize(24);
   doc.setFont('Helvetica', 'normal');
   doc.text('Assure Advisors', 20, centerY - 25);
 
@@ -240,9 +223,6 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
   doc.setFont('Helvetica', 'bold');
   doc.setTextColor(26, 26, 26);
   doc.text('Your top tax-saving strategies for 2023', 20, 40);
-
-  // After the tax strategies page title, add logo to top right
-  await addLogoWithOptimization(doc, pageWidth - 28, 40 - 8); // 28 = rightMargin(20) + width(8)
 
   // Colors for strategies (from page.tsx bar chart)
   const colors = [
@@ -409,7 +389,6 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
   // After the dark blue background is set, add white logo
   doc.setFillColor(getDarkBlue().r, getDarkBlue().g, getDarkBlue().b);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
-  await addLogoWithOptimization(doc, 20, 20, true); // true for white logo
 
   // Add subtle diagonal lines pattern to right third
   const rightThirdStart = pageWidth * 0.67;
