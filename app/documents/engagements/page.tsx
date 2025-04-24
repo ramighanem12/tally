@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import CopilotNavigation from '@/app/components/CopilotNavigation'
 
-export default function EngagementsPage() {
+interface EngagementsPageProps {}
+
+const EngagementsPage: React.FC<EngagementsPageProps> = () => {
   const router = useRouter()
 
   return (
@@ -20,3 +22,5 @@ export default function EngagementsPage() {
     </div>
   )
 }
+
+export default EngagementsPage
