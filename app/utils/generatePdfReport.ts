@@ -38,49 +38,30 @@ const formatStatus = (status: string) => {
 const LINE_SPACING = 12;
 
 // Remove lineSpacing from addDiagonalPattern function
-const addDiagonalPattern = (doc: jsPDF, pageWidth: number, pageHeight: number, color: {r: number, g: number, b: number}) => {
-  doc.setDrawColor(60, 88, 168);
-  doc.setLineWidth(0.25);
-  doc.setGState(new (doc as any).GState({ opacity: 0.08 }));
+// const addDiagonalPattern = (doc: jsPDF, pageWidth: number, pageHeight: number, color: {r: number, g: number, b: number}) => {
+//   doc.setDrawColor(60, 88, 168);
+//   doc.setLineWidth(0.25);
+//   doc.setGState(new (doc as any).GState({ opacity: 0.08 }));
+//
+//   // Draw diagonal lines in bottom left corner
+//   const patternWidth = pageWidth * 0.4;
+//   const patternHeight = pageHeight * 0.4;
+//   
+//   for (let i = 0; i < patternWidth + patternHeight; i += LINE_SPACING) {
+//     doc.line(
+//       0, pageHeight - patternHeight + i,
+//       Math.min(i, patternWidth), pageHeight
+//     );
+//   }
+//
+//   doc.setGState(new (doc as any).GState({ opacity: 1 }));
+// };
 
-  // Draw diagonal lines in bottom left corner
-  const patternWidth = pageWidth * 0.4;
-  const patternHeight = pageHeight * 0.4;
-  
-  for (let i = 0; i < patternWidth + patternHeight; i += LINE_SPACING) {
-    doc.line(
-      0, pageHeight - patternHeight + i,
-      Math.min(i, patternWidth), pageHeight
-    );
-  }
-
-  doc.setGState(new (doc as any).GState({ opacity: 1 }));
-};
-
-// Add this near the top of the file
+// Modify the logo loading function to use a simpler approach
 const addLogoWithOptimization = async (doc: jsPDF, x: number, y: number, isWhite: boolean = false) => {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      const aspectRatio = img.width / img.height;
-      const desiredWidth = 8;
-      const height = desiredWidth / aspectRatio;
-      
-      // Use the same image instance for all occurrences
-      doc.addImage(
-        isWhite ? '/tally-logomark-white.png' : '/tally-official-logomark.png',
-        'PNG',
-        x,
-        y,
-        desiredWidth,
-        height,
-        undefined, // alias
-        'FAST' // compression option
-      );
-      resolve(null);
-    };
-    img.src = isWhite ? '/tally-logomark-white.png' : '/tally-official-logomark.png';
-  });
+  // Use direct image data or base64 instead of canvas
+  const logoPath = isWhite ? '/tally-logomark-white.png' : '/tally-official-logomark.png';
+  doc.addImage(logoPath, 'PNG', x, y, 8, 8);
 };
 
 export const generatePdfReport = async (strategies: Strategy[]) => {
