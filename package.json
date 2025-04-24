@@ -49,7 +49,6 @@
     "@visx/scale": "^3.12.0",
     "@visx/shape": "^3.12.0",
     "@visx/tooltip": "^3.12.0",
-    "canvas": "^3.1.0",
     "chart.js": "^4.4.9",
     "date-fns": "^4.1.0",
     "exceljs": "^4.4.0",

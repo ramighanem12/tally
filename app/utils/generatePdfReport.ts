@@ -2,6 +2,10 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Strategy, strategyDescriptions, strategySteps } from '@/data/strategies';
 
+// Add these base64 strings at the top of the file
+const LOGO_BASE64 = "data:image/png;base64,YOUR_BASE64_STRING_HERE"; // Replace with your actual base64 logo
+const LOGO_WHITE_BASE64 = "data:image/png;base64,YOUR_WHITE_BASE64_STRING_HERE"; // Replace with your actual white logo base64
+
 // Create a function that returns the color object
 const getDarkBlue = () => ({
   r: 28,
@@ -57,11 +61,10 @@ const LINE_SPACING = 12;
 //   doc.setGState(new (doc as any).GState({ opacity: 1 }));
 // };
 
-// Modify the logo loading function to use a simpler approach
+// Update the logo function
 const addLogoWithOptimization = async (doc: jsPDF, x: number, y: number, isWhite: boolean = false) => {
-  // Use direct image data or base64 instead of canvas
-  const logoPath = isWhite ? '/tally-logomark-white.png' : '/tally-official-logomark.png';
-  doc.addImage(logoPath, 'PNG', x, y, 8, 8);
+  const logoData = isWhite ? LOGO_WHITE_BASE64 : LOGO_BASE64;
+  doc.addImage(logoData, 'PNG', x, y, 8, 8);
 };
 
 export const generatePdfReport = async (strategies: Strategy[]) => {
