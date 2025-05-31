@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
 
 type SelectedTab = 
   | 'projects'
@@ -17,6 +18,15 @@ export default function CopilotNavigation({
 }) {
   const router = useRouter()
   const { user } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut()
+      router.push('/')
+    } catch (error) {
+      console.error('Error logging out:', error)
+    }
+  }
 
   return (
     <nav className="w-[216px] bg-[#F3F6F6] flex flex-col h-screen overflow-hidden">
@@ -41,7 +51,7 @@ export default function CopilotNavigation({
         </div>
 
         {/* Navigation items */}
-        <div className="space-y-1">
+        <div className="space-y-1 flex-1">
           <button 
             onClick={() => router.push('/projects')}
             className={`w-full text-left px-3 py-2 text-[14px] font-medium rounded-md transition-colors ${
@@ -95,6 +105,19 @@ export default function CopilotNavigation({
             }`}
           >
             Payouts
+          </button>
+        </div>
+
+        {/* Logout button at bottom */}
+        <div className="pb-4 pt-2 border-t border-gray-200">
+          <button 
+            onClick={handleLogout}
+            className="w-full text-left px-3 py-2 text-[14px] font-medium rounded-md transition-colors text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Log out
           </button>
         </div>
       </div>
