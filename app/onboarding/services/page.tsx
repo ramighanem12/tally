@@ -172,7 +172,7 @@ function PackageCards() {
       </div>
 
       <div className="mt-8">
-        <h3 className="text-[15px] font-medium text-gray-600 mb-4">Ancillary services</h3>
+        <h3 className="text-[15px] font-[500] text-gray-600 mb-4">Ancillary services</h3>
         <div className="grid grid-cols-5 gap-3">
           {ancillaryServices.map((service) => {
             const isSelected = selectedAncillaryServices.includes(service.id);
@@ -263,23 +263,30 @@ export default function ServicesPage() {
   return (
     <div className="h-screen flex overflow-hidden">
       <CopilotNavigation selectedTab="onboarding" />
-      <div className="flex-1 p-4 pl-0 bg-[#EFF0EC] overflow-hidden">
-        <main className="h-full rounded-xl bg-white overflow-y-auto">
+      <div className="flex-1 p-[9px] pl-0 bg-[#F3F6F6] overflow-hidden">
+        <main className="h-full rounded-[14px] bg-white overflow-y-auto">
           <div className="px-[155px] py-4 mt-6">
             {/* Header with breadcrumb */}
-            <h1 className="text-[18px] font-semibold text-gray-900 mt-[11px] mb-4 flex items-center gap-2">
-              <Link 
-                href="/onboarding"
-                className="text-gray-900 hover:text-gray-700 transition-colors"
-              >
+            <div className="mb-8 flex items-center gap-2">
+              <span className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                 Onboarding
-              </Link>
-              <svg className="w-4 h-4 text-gray-400" viewBox="0 0 16 16" fill="none">
-                <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </span>
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="12" 
+                height="12" 
+                viewBox="0 0 24 24" 
+                className="text-[#646462]"
+              >
+                <path 
+                  fill="currentColor" 
+                  d="M11.109,3L11.109,3C9.78,3,8.988,4.481,9.725,5.587L14,12l-4.275,6.413C8.988,19.519,9.78,21,11.109,21h0 c0.556,0,1.076-0.278,1.385-0.741l4.766-7.15c0.448-0.672,0.448-1.547,0-2.219l-4.766-7.15C12.185,3.278,11.666,3,11.109,3z"
+                />
               </svg>
-              <span className="text-gray-500">Services</span>
-            </h1>
-
+              <span className="text-[14px] leading-[20px] font-oracle text-[#1A1A1A] font-[500]">
+                Services
+              </span>
+            </div>
 
             {/* Services Content */}
             <div>
@@ -287,7 +294,7 @@ export default function ServicesPage() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h2 className="text-[15px] font-medium text-gray-600 mb-4">
+                      <h2 className="text-[15px] font-[500] text-gray-600 mb-4">
                         Package
                       </h2>
                     </div>

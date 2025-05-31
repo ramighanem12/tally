@@ -6,20 +6,7 @@ import { supabase } from '@/lib/supabase'
 
 // First, let's define our boolean notification keys as a const array
 const NOTIFICATION_KEYS = [
-  'document_request',
-  'notice_review',
-  'new_plan_item',
-  'plan_item_action',
-  'new_deduction',
-  'new_tax_credit',
-  'tax_strategy_update',
-  'new_tax_filing',
-  'meetings',
-  'meeting_notes',
-  'service_updates',
-  'new_service',
-  'new_invoice',
-  'connection_sync'
+  'document_request'
 ] as const // Make this a const array
 
 // Create a type from our const array
@@ -46,19 +33,6 @@ export default function NotificationsPage() {
   // Initialize with default values
   const defaultNotificationState: NotificationPreferences = {
     document_request: true,
-    notice_review: true,
-    new_plan_item: true,
-    plan_item_action: true,
-    new_deduction: true,
-    new_tax_credit: true,
-    tax_strategy_update: true,
-    new_tax_filing: true,
-    meetings: true,
-    meeting_notes: true,
-    service_updates: true,
-    new_service: true,
-    new_invoice: true,
-    connection_sync: true,
     email_frequency: 'immediate'
   }
 
@@ -174,86 +148,6 @@ export default function NotificationsPage() {
           id: 'document_request',
           name: 'Document request',
           description: 'Get notified when there is a new document request'
-        },
-        {
-          id: 'notice_review',
-          name: 'Notice review',
-          description: 'Get notified when a notice is reviewed'
-        },
-        {
-          id: 'new_plan_item',
-          name: 'New plan item',
-          description: 'Get notified when a new item is added to your plan'
-        },
-        {
-          id: 'plan_item_action',
-          name: 'Action needed on a plan item',
-          description: 'Get notified when action is needed on a plan item'
-        },
-        {
-          id: 'new_deduction',
-          name: 'New deduction opportunity',
-          description: 'Get notified about new deduction opportunities'
-        },
-        {
-          id: 'new_tax_credit',
-          name: 'New tax credit opportunity',
-          description: 'Get notified about new tax credit opportunities'
-        },
-        {
-          id: 'tax_strategy_update',
-          name: 'Update to tax strategy',
-          description: 'Get notified when there are updates to your tax strategy'
-        },
-        {
-          id: 'new_tax_filing',
-          name: 'New tax filing',
-          description: 'Get notified when there is a new tax filing'
-        },
-        {
-          id: 'meetings',
-          name: 'Meeting updates',
-          description: 'Get notified about new meetings and schedule changes'
-        },
-        {
-          id: 'meeting_notes',
-          name: 'Meeting notes ready',
-          description: 'Get notified when meeting notes are ready'
-        }
-      ]
-    },
-    {
-      name: 'Billing',
-      notifications: [
-        {
-          id: 'new_invoice',
-          name: 'New invoice',
-          description: 'Get notified when a new invoice is generated'
-        }
-      ]
-    },
-    {
-      name: 'Connections',
-      notifications: [
-        {
-          id: 'connection_sync',
-          name: 'Connection sync issue',
-          description: 'Get notified when there is a sync issue with your connections'
-        }
-      ]
-    },
-    {
-      name: 'Features',
-      notifications: [
-        {
-          id: 'service_updates',
-          name: 'New features',
-          description: 'Get notified when we release new features'
-        },
-        {
-          id: 'new_service',
-          name: 'New service available',
-          description: 'Get notified when new services become available'
         }
       ]
     }
@@ -286,13 +180,13 @@ export default function NotificationsPage() {
       {/* Fixed Header */}
       <div className="px-6 pr-[24px] py-4 border-b border-[#E4E5E1]">
         <div className="flex justify-between items-center">
-          <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+          <h1 className="text-[20px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
             Notifications
           </h1>
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors flex items-center gap-2"
+            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-[500] text-[14px] leading-[16px] transition-colors flex items-center gap-2"
           >
             {isSaving ? (
               <>
@@ -328,7 +222,7 @@ export default function NotificationsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-3 text-[14px] leading-[20px] font-medium font-['Inter'] border-b-2 transition-colors ${
+              className={`py-3 text-[14px] leading-[20px] font-medium font-oracle border-b-2 transition-colors ${
                 activeTab === tab.id 
                   ? 'border-[#1A1A1A] text-[#1A1A1A]' 
                   : 'border-transparent text-[#646462] hover:text-[#1A1A1A]'
@@ -350,23 +244,23 @@ export default function NotificationsPage() {
                 <div className="border border-[#E4E5E1] rounded-lg p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                      <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                         Enable email notifications
                       </p>
-                      <p className="text-[13px] leading-[18px] font-['Inter'] text-[#646462] mt-0.5">
+                      <p className="text-[13px] leading-[18px] font-oracle text-[#646462] mt-0.5">
                         Enable notifications to {user?.email}
                       </p>
                     </div>
                     
                     <button
                       onClick={handleMasterToggle}
-                      className={`relative inline-flex h-[16px] w-[32px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                      className={`relative inline-flex h-[16px] w-[26px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                         masterEnabled ? 'bg-[#1A1A1A]' : 'bg-[#E4E5E1]'
                       }`}
                     >
                       <span
                         className={`pointer-events-none inline-block h-[12px] w-[12px] transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                          masterEnabled ? 'translate-x-[16px]' : 'translate-x-0'
+                          masterEnabled ? 'translate-x-[10px]' : 'translate-x-0'
                         }`}
                       />
                     </button>
@@ -375,7 +269,7 @@ export default function NotificationsPage() {
 
                 {notificationCategories.map((category) => (
                   <div key={category.name} className="space-y-4">
-                    <h3 className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#646462]">
+                    <h3 className="text-[14px] leading-[20px] font-medium font-oracle text-[#646462]">
                       {category.name}
                     </h3>
 
@@ -389,10 +283,10 @@ export default function NotificationsPage() {
                         >
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                              <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                                 {notification.name}
                               </p>
-                              <p className="text-[13px] leading-[18px] font-['Inter'] text-[#646462] mt-0.5">
+                              <p className="text-[13px] leading-[18px] font-oracle text-[#646462] mt-0.5">
                                 {notification.description}
                               </p>
                             </div>
@@ -400,7 +294,7 @@ export default function NotificationsPage() {
                             <button
                               onClick={() => handleToggle(notification.id as NotificationKey)}
                               disabled={!masterEnabled}
-                              className={`relative inline-flex h-[16px] w-[32px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                              className={`relative inline-flex h-[16px] w-[26px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
                                 enabledNotifications[notification.id as NotificationKey] && masterEnabled
                                   ? 'bg-[#1A1A1A]' 
                                   : 'bg-[#E4E5E1]'
@@ -409,7 +303,7 @@ export default function NotificationsPage() {
                               <span
                                 className={`pointer-events-none inline-block h-[12px] w-[12px] transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
                                   enabledNotifications[notification.id as NotificationKey] && masterEnabled
-                                    ? 'translate-x-[16px]' 
+                                    ? 'translate-x-[10px]' 
                                     : 'translate-x-0'
                                 }`}
                               />
@@ -431,10 +325,10 @@ export default function NotificationsPage() {
                 }`}>
                   <div className="flex gap-24">
                     <div className="flex-1">
-                      <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                      <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                         Email delivery settings
                       </h2>
-                      <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                      <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                         Choose when and how you'd like to receive email notifications.
                       </p>
                     </div>
@@ -442,13 +336,13 @@ export default function NotificationsPage() {
                     <div className="flex-1">
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                          <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                             Email frequency
                           </label>
                           <select 
                             value={emailFrequency}
                             onChange={handleEmailFrequencyChange}
-                            className="w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
+                            className="w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
                           >
                             <option value="immediate">Send immediately</option>
                             <option value="daily">Daily digest</option>

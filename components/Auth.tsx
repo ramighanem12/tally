@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { AuthError } from '@supabase/supabase-js'
 import { useAuth } from '@/contexts/AuthContext'
-import { TallyLogo } from '@/app/components/TallyLogo'
 
 const inputStyles = `
   w-full px-3 py-2 text-sm
@@ -51,7 +50,9 @@ export default function Auth() {
       <div className="w-full max-w-sm space-y-8">
         {/* Logo and Title */}
         <div className="flex flex-col items-center space-y-4">
-          <TallyLogo className="w-12 h-12 text-blue-600" />
+          <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xl">D</span>
+          </div>
           <h2 className="text-2xl font-semibold text-gray-900">Welcome back</h2>
           <p className="text-gray-500 text-center">
             Sign in to your account to continue

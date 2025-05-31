@@ -69,15 +69,15 @@ export default function OnboardingPage() {
   return (
     <div className="h-screen flex overflow-hidden">
       <CopilotNavigation selectedTab="onboarding" />
-      <div className="flex-1 p-[9px] pl-0 bg-[#F0F0F0] overflow-hidden">
-        <main className="h-full rounded-xl bg-white/60 overflow-y-auto">
+      <div className="flex-1 p-[9px] pl-0 bg-[#F3F6F6] overflow-hidden">
+        <main className="h-full rounded-[14px] bg-white overflow-hidden flex flex-col">
           <div className="px-[155px] py-4 mt-6">
             <div className="flex items-center justify-between">
-              <h1 className="text-[26px] leading-[32px] text-[#1A1A1A] mt-[11px] mb-4 font-['Inter'] font-[700]">
-                Get set up with Tally
+              <h1 className="text-[26px] leading-[32px] text-[#1A1A1A] mt-[11px] mb-4 font-oracle font-[500]">
+                Get set up with Clarity
               </h1>
               <button 
-                className="px-4 py-2 bg-[#F0F0F0] hover:bg-[#E4E4E4] text-[#1A1A1A] text-[14px] leading-[16px] font-semibold font-['Inter'] rounded-full transition-colors"
+                className="px-4 py-2 bg-[#F0F0F0] hover:bg-[#E4E4E4] text-[#1A1A1A] text-[14px] leading-[16px] font-[500] font-oracle rounded-full transition-colors"
                 onClick={() => {/* TODO: Add help functionality */}}
               >
                 I need help
@@ -98,14 +98,14 @@ export default function OnboardingPage() {
                     d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.984375 5.9863281 A 1.0001 1.0001 0 0 0 11 7 L 11 13 A 1.0001 1.0001 0 1 0 13 13 L 13 7 A 1.0001 1.0001 0 0 0 11.984375 5.9863281 z M 12 16 A 1 1 0 0 0 12 18 A 1 1 0 0 0 12 16 z"
                   />
                 </svg>
-                <p className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#222222]">
+                <p className="text-[14px] leading-[20px] font-normal font-oracle text-[#222222]">
                   Complete onboarding to activate your account
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-[18px] leading-[24px] font-[600] text-[#1A1A1A] font-inter">Get set up</h2>
+              <h2 className="text-[18px] leading-[24px] font-[500] text-[#1A1A1A] font-oracle">Get set up</h2>
             </div>
             
             <div className="flex-1 space-y-3">
@@ -153,7 +153,7 @@ export default function OnboardingPage() {
                     </div>
                     <div className="flex-1 ml-3">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-[16px] leading-[24px] font-semibold text-[#1A1A1A] font-inter">
+                        <h3 className="text-[16px] leading-[24px] font-[500] text-[#1A1A1A] font-oracle">
                           {step.title}
                         </h3>
                         {expandedStep !== step.id && (
@@ -167,11 +167,11 @@ export default function OnboardingPage() {
                       <div 
                         className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedStep === step.id ? 'mt-2 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
                       >
-                        <p className="text-[14px] leading-[20px] text-[#1A1A1A] font-inter font-normal mb-4">
+                        <p className="text-[14px] leading-[20px] text-[#1A1A1A] font-oracle font-normal mb-4">
                           {step.description}
                         </p>
                         <button 
-                          className={`px-4 py-2 rounded-full text-[14px] leading-[16px] font-semibold font-inter ${
+                          className={`px-4 py-2 rounded-full text-[14px] leading-[16px] font-[500] font-oracle ${
                             step.completed ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-black text-[#FAFAF7] hover:bg-[#333333]'
                           }`}
                           disabled={step.completed}
@@ -201,7 +201,7 @@ export default function OnboardingPage() {
             </div>
 
             <div className="flex items-center gap-2 mt-8 mb-4">
-              <h2 className="text-[18px] leading-[24px] font-[600] text-[#1A1A1A] font-inter">Additional setup</h2>
+              <h2 className="text-[18px] leading-[24px] font-[500] text-[#1A1A1A] font-oracle">Additional setup</h2>
             </div>
 
             <div className="flex-1 space-y-3">
@@ -249,7 +249,7 @@ export default function OnboardingPage() {
                     </div>
                     <div className="flex-1 ml-3">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-[16px] leading-[24px] font-semibold text-[#1A1A1A] font-inter">
+                        <h3 className="text-[16px] leading-[24px] font-[500] text-[#1A1A1A] font-oracle">
                           {step.title}
                         </h3>
                         {expandedStep !== step.id && (
@@ -263,11 +263,11 @@ export default function OnboardingPage() {
                       <div 
                         className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedStep === step.id ? 'mt-2 max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
                       >
-                        <p className="text-[14px] leading-[20px] text-[#1A1A1A] font-inter font-normal mb-4">
+                        <p className="text-[14px] leading-[20px] text-[#1A1A1A] font-oracle font-normal mb-4">
                           {step.description}
                         </p>
                         <button 
-                          className={`px-4 py-2 rounded-full text-[14px] leading-[16px] font-semibold font-inter ${
+                          className={`px-4 py-2 rounded-full text-[14px] leading-[16px] font-[500] font-oracle ${
                             step.completed ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-black text-[#FAFAF7] hover:bg-[#333333]'
                           }`}
                           disabled={step.completed}

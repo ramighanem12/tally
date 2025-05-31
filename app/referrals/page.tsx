@@ -1,250 +1,168 @@
 'use client'
+import { useState, useMemo } from 'react'
 import CopilotNavigation from "../components/CopilotNavigation"
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
-import { toast } from 'sonner'
-
-const SortIcon = ({ 
-  className = "", 
-  active = false, 
-  direction 
-}: { 
-  className?: string;
-  active?: boolean;
-  direction?: 'asc' | 'desc';
-}) => (
-  <svg 
-    className={`w-3.5 h-3.5 ${className} ${active ? 'text-gray-900' : ''} ${direction === 'desc' ? 'rotate-180' : ''} transition-transform`}
-    viewBox="0 0 16 16" 
-    fill="none"
-  >
-    <path d="M4.5 4.5L4.5 11.5M4.5 11.5L2.5 9.5M4.5 11.5L6.5 9.5M11.5 11.5L11.5 4.5M11.5 4.5L9.5 6.5M11.5 4.5L13.5 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
 
 export default function ReferralsPage() {
-  const router = useRouter();
-  const { user } = useAuth();
-  const [copied, setCopied] = useState(false);
-  const [sortField, setSortField] = useState<'name' | 'company' | 'status' | 'date'>('date');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [currentPage, setCurrentPage] = useState(1)
+  const [copySuccess, setCopySuccess] = useState(false)
+  const rowsPerPage = 10
 
-  // This would come from your backend in a real implementation
-  const referralCode = user?.email ? `TALLY-${user.email.split('@')[0].toUpperCase()}` : '';
-  const referralLink = `https://tally.com/signup?ref=${referralCode}`;
+  // Generate a custom referral link (in real app this would come from API)
+  const referralLink = "https://platform.example.com/signup?ref=user123"
 
-  // Mock data for referrals - would come from your backend
-  const referrals = [
-    { 
-      id: 1, 
-      name: 'John Smith',
-      company: 'Acme Corp',
-      status: 'pending',
-      date: '2024-03-15'
-    },
-    { 
-      id: 2, 
-      name: 'Sarah Johnson',
-      company: 'Tech Solutions',
-      status: 'completed',
-      date: '2024-03-10'
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(referralLink)
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy: ', err)
     }
-  ];
+  }
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    toast.success('Copied to clipboard!');
-    setTimeout(() => setCopied(false), 2000);
-  };
+  // Sample referral data - in real app this would come from API
+  const allReferrals = [
+    { id: 1, name: "John Doe", status: "Completed", statusType: "completed" },
+    { id: 2, name: "Jane Smith", status: "Pending completion", statusType: "pending" },
+    { id: 3, name: "Mike Wilson", status: "Pending completion", statusType: "pending" },
+    { id: 4, name: "Sarah Johnson", status: "Completed", statusType: "completed" },
+    { id: 5, name: "David Brown", status: "Pending completion", statusType: "pending" },
+    { id: 6, name: "Emily Davis", status: "Completed", statusType: "completed" },
+    { id: 7, name: "Chris Miller", status: "Pending completion", statusType: "pending" },
+    { id: 8, name: "Lisa Anderson", status: "Completed", statusType: "completed" },
+    { id: 9, name: "Tom Garcia", status: "Pending completion", statusType: "pending" },
+    { id: 10, name: "Amy Martinez", status: "Completed", statusType: "completed" },
+    { id: 11, name: "Kevin Lee", status: "Pending completion", statusType: "pending" },
+    { id: 12, name: "Rachel White", status: "Completed", statusType: "completed" },
+  ]
 
-  const handleSort = (field: 'name' | 'company' | 'status' | 'date') => {
-    if (sortField === field) {
-      setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
+  const totalPages = Math.ceil(allReferrals.length / rowsPerPage)
+  const startIndex = (currentPage - 1) * rowsPerPage
+  const endIndex = startIndex + rowsPerPage
+  const currentReferrals = allReferrals.slice(startIndex, endIndex)
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
     }
-  };
+  }
 
-  // Sort referrals
-  const sortedReferrals = [...referrals].sort((a, b) => {
-    if (sortField === 'date') {
-      return sortDirection === 'asc'
-        ? new Date(a.date).getTime() - new Date(b.date).getTime()
-        : new Date(b.date).getTime() - new Date(a.date).getTime();
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
     }
-
-    const aValue = a[sortField];
-    const bValue = b[sortField];
-    return sortDirection === 'asc'
-      ? String(aValue).localeCompare(String(bValue))
-      : String(bValue).localeCompare(String(aValue));
-  });
+  }
 
   return (
     <div className="h-screen flex overflow-hidden">
       <CopilotNavigation selectedTab="referrals" />
-      <div className="flex-1 p-4 pl-0 bg-[#F5F6F8] overflow-hidden">
-        <main className="h-full rounded-xl bg-white overflow-y-auto">
-          <div className="px-[48px] py-4 mt-6">
-            <h1 className="text-[18px] font-semibold text-gray-900 mb-4">
-              Referrals
-            </h1>
-
-            {/* Hero Section */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 mb-8">
-              <div className="max-w-2xl">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                  Earn $500 for each successful referral
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Know someone who could benefit from Tally? Refer them and earn $500 when they become a customer.
-                </p>
-                <div className="flex flex-col gap-4">
-                  {/* Referral Link */}
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center h-9 bg-white border border-gray-200 rounded-lg overflow-hidden w-[400px]">
-                      <div className="flex-1 px-3">
-                        <div className="text-[13px] text-gray-600 truncate">
-                          {referralLink}
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => handleCopy(referralLink)}
-                        className="h-full px-3 text-[13px] font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-l border-gray-200 transition-colors flex items-center gap-1.5 flex-shrink-0"
-                      >
-                        {copied ? (
-                          <>
-                            <svg className="w-3.5 h-3.5 text-green-600" viewBox="0 0 24 24">
-                              <path d="M 20.980469 6.0039062 A 1.0001 1.0001 0 0 0 20.292969 6.3066406 L 9.0136719 17.585938 L 3.7070312 12.292969 A 1.0001 1.0001 0 1 0 2.2929688 13.707031 L 8.3085938 19.707031 A 1.0001 1.0001 0 0 0 9.7207031 19.707031 L 21.707031 7.7207031 A 1.0001 1.0001 0 0 0 20.980469 6.0039062 z" fill="currentColor"/>
-                            </svg>
-                            Copied
-                          </>
-                        ) : (
-                          <>
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M 10 1 C 8.9069372 1 8 1.9069372 8 3 L 8 5 L 5 5 C 3.9069372 5 3 5.9069372 3 7 L 3 20 C 3 21.093063 3.9069372 22 5 22 L 15 22 C 16.093063 22 17 21.093063 17 20 L 17 18 L 20 18 C 21.093063 18 22 17.093063 22 16 L 22 6 A 1.0001 1.0001 0 0 0 21.707031 5.2929688 L 17.707031 1.2929688 A 1.0001 1.0001 0 0 0 17 1 L 10 1 z M 10 3 L 16 3 L 16 6 C 16 6.552 16.447 7 17 7 L 20 7 L 20 16 L 10 16 L 10 3 z M 5 7 L 8 7 L 8 16 C 8 17.093063 8.9069372 18 10 18 L 15 18 L 15 20 L 5 20 L 5 7 z"/>
-                            </svg>
-                            Copy
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
+      <div className="flex-1 bg-[#F3F6F6] pt-4 pr-4 pb-4 overflow-hidden">
+        <main className="h-full w-full bg-white rounded-lg overflow-y-auto">
+          {/* Header section */}
+          <div className="pl-8 pr-4 pt-8 pb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <h1 className="text-[28px] leading-[36px] font-semibold text-[#1A1A1A]">
+                  Referrals
+                </h1>
               </div>
             </div>
+          </div>
 
-            {/* Referral Status */}
+          {/* Main content area */}
+          <div className="pl-8 pr-6 pb-6">
+            {/* Referral card */}
+            <div className="bg-gray-50 rounded-lg p-6 mb-6">
+              <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">
+                Refer a friend to get $20!
+              </h2>
+              
+              <div className="flex gap-3 mb-4">
+                <button 
+                  onClick={copyToClipboard}
+                  className="bg-[#E5E9E9] text-[#1A1A1A] px-3 py-1.5 rounded-md text-sm font-medium hover:bg-[#D5D9D9] transition-colors flex items-center gap-2"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z" fill="currentColor"/>
+                  </svg>
+                  {copySuccess ? 'Copied!' : 'Copy invite link'}
+                </button>
+                
+                <button className="bg-[#1FAD54] text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-[#1C9B4A] transition-colors flex items-center gap-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488" fill="currentColor"/>
+                  </svg>
+                  Invite through WhatsApp
+                </button>
+              </div>
+              
+              <p className="text-[#646462] text-[12.5px] leading-tight">
+                To earn the referral you must be active (completed work in prior 7 days) at the time the person you refer first completes 1 hour of conversations on Clarity Audio. There is a limit of $200 that can be earned in a given calendar month from referrals, although there is no limit on how many referrals you can submit. The referral is credited in the month in which the person you referred first completes one hour of conversations. In the event that we find abuse or fraud of the referral program, we reserve the right to withhold payment.
+              </p>
+            </div>
+
+            {/* Referrals table */}
             <div>
-              <h3 className="text-[15px] font-medium text-gray-600 mb-4">
-                Your referrals
-              </h3>
-              <div className="bg-white rounded-xl border border-gray-200">
-                <div className="max-h-[600px] overflow-y-auto">
-                  <div className="min-w-[990px] w-full">
-                    <table className="w-full table-fixed border-collapse relative">
-                      <colgroup>
-                        <col style={{ width: '280px' }} />
-                        <col style={{ width: '200px' }} />
-                        <col style={{ width: '150px' }} />
-                        <col style={{ width: '146px' }} />
-                      </colgroup>
-                      <thead className="sticky top-0 bg-white z-10">
-                        <tr>
-                          <th className="sticky top-0 bg-white pl-[18px] pr-6 py-1.5 text-left text-[13px] font-medium text-gray-500 border-r border-gray-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:border-b before:border-gray-200 rounded-tl-xl">
-                            <button 
-                              onClick={() => handleSort('name')}
-                              className="inline-flex items-center gap-2 hover:text-gray-700"
-                            >
-                              Name
-                              <SortIcon 
-                                active={sortField === 'name'} 
-                                direction={sortField === 'name' ? sortDirection : undefined}
-                              />
-                            </button>
-                          </th>
-                          <th className="sticky top-0 bg-white pl-[18px] pr-6 py-1.5 text-left text-[13px] font-medium text-gray-500 border-r border-gray-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:border-b before:border-gray-200">
-                            <button 
-                              onClick={() => handleSort('company')}
-                              className="inline-flex items-center gap-2 hover:text-gray-700"
-                            >
-                              Company
-                              <SortIcon 
-                                active={sortField === 'company'} 
-                                direction={sortField === 'company' ? sortDirection : undefined}
-                              />
-                            </button>
-                          </th>
-                          <th className="sticky top-0 bg-white pl-[18px] pr-6 py-1.5 text-left text-[13px] font-medium text-gray-500 border-r border-gray-200 before:absolute before:bottom-0 before:left-0 before:right-0 before:border-b before:border-gray-200">
-                            <button 
-                              onClick={() => handleSort('status')}
-                              className="inline-flex items-center gap-2 hover:text-gray-700"
-                            >
-                              Status
-                              <SortIcon 
-                                active={sortField === 'status'} 
-                                direction={sortField === 'status' ? sortDirection : undefined}
-                              />
-                            </button>
-                          </th>
-                          <th className="sticky top-0 bg-white pl-[18px] pr-6 py-1.5 text-left text-[13px] font-medium text-gray-500 before:absolute before:bottom-0 before:left-0 before:right-0 before:border-b before:border-gray-200 rounded-tr-xl">
-                            <button 
-                              onClick={() => handleSort('date')}
-                              className="inline-flex items-center gap-2 hover:text-gray-700"
-                            >
-                              Date
-                              <SortIcon 
-                                active={sortField === 'date'} 
-                                direction={sortField === 'date' ? sortDirection : undefined}
-                              />
-                            </button>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {sortedReferrals.map((referral) => (
-                          <tr key={referral.id} className="hover:bg-gray-50 last:hover:rounded-b-xl [&:last-child>td:first-child]:rounded-bl-xl [&:last-child>td:last-child]:rounded-br-xl">
-                            <td className="pl-[18px] pr-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 border-r border-gray-200">
-                              {referral.name}
-                            </td>
-                            <td className="pl-[18px] pr-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 border-r border-gray-200">
-                              {referral.company}
-                            </td>
-                            <td className="pl-[18px] pr-6 py-2 whitespace-nowrap border-r border-gray-200">
-                              <div className="flex items-center gap-2">
-                                <span className={`inline-flex items-center gap-2 px-2 py-1 text-[13px] font-medium rounded ${
-                                  referral.status === 'completed' 
-                                    ? 'bg-green-100 text-green-800'
-                                    : 'bg-blue-100 text-blue-800'
-                                }`}>
-                                  {referral.status === 'completed' ? (
-                                    <svg className="w-4 h-4" viewBox="0 0 24 24">
-                                      <path d="M 20.980469 6.0039062 A 1.0001 1.0001 0 0 0 20.292969 6.3066406 L 9.0136719 17.585938 L 3.7070312 12.292969 A 1.0001 1.0001 0 1 0 2.2929688 13.707031 L 8.3085938 19.707031 A 1.0001 1.0001 0 0 0 9.7207031 19.707031 L 21.707031 7.7207031 A 1.0001 1.0001 0 0 0 20.980469 6.0039062 z" fill="currentColor"/>
-                                    </svg>
-                                  ) : (
-                                    <svg className="w-4 h-4" viewBox="0 0 24 24">
-                                      <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 12.46875 4.9863281 A 1.0001 1.0001 0 0 0 11.503906 5.9160156 L 11.003906 11.916016 A 1.0001 1.0001 0 0 0 11.417969 12.814453 L 14.917969 15.314453 A 1.0010463 1.0010463 0 0 0 16.082031 13.685547 L 13.042969 11.517578 L 13.496094 6.0839844 A 1.0001 1.0001 0 0 0 12.46875 4.9863281 z" fill="currentColor"/>
-                                    </svg>
-                                  )}
-                                  {referral.status.charAt(0).toUpperCase() + referral.status.slice(1)}
-                                </span>
-                              </div>
-                            </td>
-                            <td className="pl-[18px] pr-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {new Date(referral.date).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric'
-                              })}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+              <h3 className="text-lg font-semibold text-[#1A1A1A] mb-4">Your Referrals</h3>
+              
+              <div className="bg-white rounded-lg">
+                <table className="w-full table-fixed">
+                  <thead>
+                    <tr className="bg-gray-50 border-0">
+                      <th className="text-left py-2.5 px-6 text-[13px] font-medium text-gray-700 w-[50%] border-0">Name</th>
+                      <th className="text-left py-2.5 px-6 text-[13px] font-medium text-gray-700 w-[50%] border-0">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentReferrals.map((referral) => (
+                      <tr key={referral.id} className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => {/* TODO: Navigate to referral details */}}>
+                        <td className="py-2.5 px-6 text-[#1A1A1A] font-medium text-[13px]">{referral.name}</td>
+                        <td className="py-2.5 px-6">
+                          <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[12px] font-medium ${
+                            referral.statusType === 'completed' 
+                              ? 'bg-[#D1FAE5] text-[#065F46]' 
+                              : 'bg-gray-100 text-gray-500'
+                          }`}>
+                            {referral.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div className="flex items-center justify-between mt-6">
+                <div className="text-[13px] text-gray-500">
+                  Showing {allReferrals.length > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, allReferrals.length)} of {allReferrals.length} results
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={goToPrevPage}
+                    disabled={currentPage === 1}
+                    className={`px-2 py-1.5 text-[13px] rounded-lg font-medium transition-all duration-200 ${
+                      currentPage === 1
+                        ? 'text-gray-400 border border-gray-100 bg-white cursor-not-allowed'
+                        : 'text-gray-700 hover:text-gray-900 border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 cursor-pointer'
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  <span className="text-[13px] text-gray-500 px-3">
+                    Page {currentPage} of {totalPages || 1}
+                  </span>
+                  <button
+                    onClick={goToNextPage}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    className={`px-2 py-1.5 text-[13px] rounded-lg font-medium transition-all duration-200 ${
+                      currentPage === totalPages || totalPages === 0
+                        ? 'text-gray-400 border border-gray-100 bg-white cursor-not-allowed'
+                        : 'text-gray-700 hover:text-gray-900 border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 cursor-pointer'
+                    }`}
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
             </div>

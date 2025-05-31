@@ -92,13 +92,13 @@ export default function TaxSettingsPage() {
       {/* Fixed Header */}
       <div className="px-6 pr-[24px] py-4 border-b border-[#E4E5E1]">
         <div className="flex justify-between items-center">
-          <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+          <h1 className="text-[20px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
             Tax settings
           </h1>
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors flex items-center gap-2"
+            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-oracle font-[500] text-[14px] leading-[16px] transition-colors flex items-center gap-2"
           >
             {isSaving ? (
               <>

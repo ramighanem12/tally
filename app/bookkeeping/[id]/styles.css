@@ -1,0 +1,37 @@
+@keyframes fadeSlideIn {
+  0% { 
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% { 
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-border {
+  0% {
+    border-color: #41629E;
+  }
+  50% {
+    border-color: #E4E5E1;
+  }
+  100% {
+    border-color: #41629E;
+  }
+}
+
+.animate-pulse-border {
+  animation: pulse-border 2s ease-in-out infinite;
+} 

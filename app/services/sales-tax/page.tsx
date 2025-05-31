@@ -1,110 +1,272 @@
 'use client'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import CopilotNavigation from "../../components/CopilotNavigation"
 import { toast } from 'sonner'
+import { useState } from 'react'
 
-export default function SalesTaxPage() {
-  const router = useRouter()
-  const [isEnabled, setIsEnabled] = useState(false)
-
-  return (
-    <>
-      {/* Fixed Header */}
-      <div className="px-6 pr-[24px] py-4 border-b border-[#E4E5E1]">
-        <div className="flex justify-between items-center">
-          <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
-            Sales tax
-          </h1>
+// Add FAQ Question component
+const FAQQuestion = ({ 
+  question, 
+  answer,
+  isExpanded,
+  onToggle
+}: { 
+  question: string
+  answer: string
+  isExpanded: boolean
+  onToggle: () => void
+}) => (
+  <div className="border-t first:border-t-0 border-[#E4E5E1]">
+    <button 
+      onClick={onToggle}
+      className="w-full flex items-center justify-between px-3 py-3 text-left"
+    >
+      <div className="flex items-center gap-2">
+        <svg 
+          width="16" 
+          height="16" 
+          viewBox="0 0 16 16" 
+          className={`transition-transform ${isExpanded ? 'text-[#1A1A1A]' : 'text-[#A3A3A3]'} ${
+            isExpanded ? 'rotate-90' : ''
+          }`}
+        >
+          <path 
+            fill="currentColor" 
+            d="M6.5 12L10.5 8L6.5 4V12Z"
+          />
+        </svg>
+        <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
+          {question}
+        </span>
+      </div>
+    </button>
+    <div className={`grid transition-[grid-template-rows] duration-200 ${
+      isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+    }`}>
+      <div className="overflow-hidden">
+        <div className="px-8 pb-3">
+          <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
+            {answer}
+          </p>
         </div>
       </div>
+    </div>
+  </div>
+)
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-6 pr-[24px] py-4">
-          {/* Promotional Banner */}
-          <div className="bg-[#F0F0F0] rounded-xl p-8 relative mb-4 flex">
-            {/* Left Content - 60% */}
-            <div className="w-[60%] flex flex-col justify-center">
-              <h2 className="text-[20px] leading-[32px] font-semibold font-['Inter'] text-[#1A1A1A]">
-                Let Tally file your sales tax returns
-              </h2>
-              <p className="mt-2 text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A]">
-                Let us handle your sales tax calculations automatically. We'll make sure you're charging the right amount of tax for every transaction.
+export default function SalesTaxPage() {
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set())
+
+  const toggleQuestion = (id: string) => {
+    setExpandedQuestions(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  // FAQ data
+  const faqs = [
+    {
+      id: '1',
+      question: 'What states do you support for sales tax filing?',
+      answer: 'We support sales tax filing in all 50 U.S. states and territories. Our system automatically determines your nexus obligations and filing requirements for each jurisdiction.'
+    },
+    {
+      id: '2',
+      question: 'How does automatic sales tax calculation work?',
+      answer: 'Our system integrates with your existing payment processors and e-commerce platforms to automatically calculate and collect the correct sales tax rates for each transaction based on location, product type, and applicable exemptions.'
+    },
+    {
+      id: '3',
+      question: 'What happens if I get audited?',
+      answer: 'We provide comprehensive audit support including detailed transaction records, tax calculation documentation, and filing histories. Our team of tax experts will help guide you through the audit process.'
+    },
+    {
+      id: '4',
+      question: 'How much does it cost?',
+      answer: 'We charge $75 per state registration and $50 per return filing. There are no additional or hidden fees.'
+    },
+    {
+      id: '5',
+      question: 'Do you guarantee on-time filing?',
+      answer: 'Yes, we guarantee accurate and timely filing of your sales tax returns. In the rare event that we miss a deadline or make an error, we will cover any resulting penalties or fees.'
+    }
+  ]
+
+  return (
+    <div className="h-screen flex overflow-hidden">
+      <CopilotNavigation selectedTab="sales-tax" />
+      <div className="flex-1 p-[9px] pl-0 bg-[#F3F6F6] overflow-auto">
+        {/* Promotional Banner Card */}
+        <div className="bg-white rounded-[14px] mb-3">
+          <div className="pt-6 pb-8 px-6 pr-0 relative flex">
+            {/* Left Content - 75% */}
+            <div className="w-[75%] flex flex-col justify-center">
+              {/* Breadcrumb */}
+              <div className="mb-8 flex items-center gap-2">
+                <span className="text-[14px] leading-[20px] font-oracle text-[#646462]">
+                  Services
+                </span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="12" 
+                  height="12" 
+                  viewBox="0 0 24 24" 
+                  className="text-[#646462]"
+                >
+                  <path 
+                    fill="currentColor" 
+                    d="M11.109,3L11.109,3C9.78,3,8.988,4.481,9.725,5.587L14,12l-4.275,6.413C8.988,19.519,9.78,21,11.109,21h0 c0.556,0,1.076-0.278,1.385-0.741l4.766-7.15c0.448-0.672,0.448-1.547,0-2.219l-4.766-7.15C12.185,3.278,11.666,3,11.109,3z"
+                  />
+                </svg>
+                <span className="text-[14px] leading-[20px] font-oracle text-[#1A1A1A] font-[500]">
+                  Sales tax
+                </span>
+              </div>
+
+              <div className="flex flex-col items-start gap-2">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[6px] bg-[#B6F2E3] text-[#181818] font-oracle font-[450] text-[13px] leading-[18px]">
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="14" 
+                    height="14" 
+                    viewBox="0 0 24 24"
+                    className="fill-[#181818]"
+                  >
+                    <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 15.980469 8.9902344 A 1.0001 1.0001 0 0 0 15.292969 9.2929688 L 11 13.585938 L 8.7070312 11.292969 A 1.0001 1.0001 0 1 0 7.2929688 12.707031 L 10.292969 15.707031 A 1.0001 1.0001 0 0 0 11.707031 15.707031 L 16.707031 10.707031 A 1.0001 1.0001 0 0 0 15.980469 8.9902344 z" />
+                  </svg>
+                  Enabled
+                </span>
+                <h2 className="text-[24px] leading-[32px] font-medium font-oracle text-[#1A1A1A]">
+                  Sales tax, on autopilot
+                </h2>
+              </div>
+              <p className="mt-2 text-[14px] leading-[20px] font-oracle text-[#1A1A1A] max-w-[600px]">
+                We integrate with your financial tools to handle your sales tax registrations, returns, and filings across all states automatically.
               </p>
               <button 
-                className="mt-4 bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors inline-flex items-center w-fit"
+                className="mt-4 bg-[#1A1A1A] hover:bg-[#333333] text-white px-3 h-[28px] rounded-full font-oracle font-medium text-[13px] leading-[18px] transition-colors inline-flex items-center gap-1.5 w-fit"
                 onClick={() => {
-                  toast.success('We will get back to you about sales tax filing')
+                  toast.success('Our team will get back to you soon!')
                 }}
               >
                 Request access
               </button>
 
               {/* Feature Cards */}
-              <div className="mt-12 grid grid-cols-3 gap-4">
-                {/* Card 1 */}
+              <div className="mt-12 grid grid-cols-4 gap-6">
+                {/* Card 1 - Building/Bank Icon */}
                 <div className="flex flex-col items-start gap-2">
-                  <svg className="w-6 h-6 text-[#1A1A1A]" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M 11.498047 3.0039062 C 10.926047 3.0039062 10.353609 3.1540781 9.8496094 3.4550781 L 1.4003906 8.5039062 C 0.67739063 8.9359063 0.9975625 10 1.8515625 10 L 3 10 L 3 16.019531 C 2.4692861 16.069694 2.0507813 16.481704 2.0507812 17 L 2.0507812 19 C 1.4707813 19 1 19.448 1 20 L 1 21 C 1 21.552 1.4707813 22 2.0507812 22 L 20.949219 22 C 21.529219 22 22 21.552 22 21 L 22 20 C 22 19.448 21.529219 19 20.949219 19 L 20.949219 17 C 20.949219 16.481704 20.530714 16.069694 20 16.019531 L 20 10 L 21.144531 10 C 21.998531 10 22.320656 8.9359063 21.597656 8.5039062 L 13.146484 3.4550781 C 12.643484 3.1530781 12.070047 3.0039063 11.498047 3.0039062 z M 11.498047 5.0039062 C 11.721047 5.0039062 11.936094 5.060875 12.121094 5.171875 L 16.855469 8 L 14.154297 8 A 1.0001 1.0001 0 0 0 13.984375 7.9863281 A 1.0001 1.0001 0 0 0 13.839844 8 L 9.1542969 8 A 1.0001 1.0001 0 0 0 8.984375 7.9863281 A 1.0001 1.0001 0 0 0 8.8398438 8 L 6.1425781 8 L 10.875 5.171875 C 11.06 5.060875 11.275047 5.0039062 11.498047 5.0039062 z M 5 10 L 8 10 L 8 16 L 5 16 L 5 10 z M 10 10 L 13 10 L 13 16 L 10 16 L 10 10 z M 15 10 L 18 10 L 18 16 L 15 16 L 15 10 z M 4.1582031 18 L 8.8320312 18 A 1.0001 1.0001 0 0 0 9.1582031 18 L 13.832031 18 A 1.0001 1.0001 0 0 0 14.158203 18 L 18.832031 18 A 1.0001 1.0001 0 0 0 18.949219 18.011719 L 18.949219 19 C 18.949219 19.364 19.04775 19.706 19.21875 20 L 3.78125 20 C 3.95125 19.706 4.0507813 19.364 4.0507812 19 L 4.0507812 18.011719 A 1.0001 1.0001 0 0 0 4.1582031 18 z"/>
+                  <svg 
+                    className="w-6 h-6 text-[#1A1A1A]" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      fill="currentColor" 
+                      d="M11.498047 3.0039062L2 8.5039062C2 8.5039062 1.7982031 9.0019062 2.5332031 9.0019062L21.466797 9.0019062C22.201797 9.0019062 22 8.5039062 22 8.5039062L12.501953 3.0039062C12.501953 3.0039062 11.498047 3.0039062 11.498047 3.0039062zM4 11v9h4v-9H4zm6 0v9h4v-9h-4zm6 0v9h4v-9h-4zM3 21v2h18v-2H3z"
+                    />
                   </svg>
-                  <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A] max-w-[180px]">
+                  <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A] max-w-[180px]">
                     Sales and use tax filed across every state
                   </p>
                 </div>
 
-                {/* Card 2 */}
+                {/* Card 2 - Checkmark/Verified Icon */}
                 <div className="flex flex-col items-start gap-2">
-                  <svg className="w-6 h-6 text-[#1A1A1A]" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M 12 1.6796875 C 11.314647 1.6796875 10.629095 1.8674277 10.025391 2.2421875 L 9.0292969 2.859375 L 7.8613281 2.9453125 C 6.4444497 3.0488536 5.2018004 3.9486577 4.6660156 5.265625 L 4.2246094 6.3515625 L 3.328125 7.1074219 C 2.2423675 8.0242535 1.7684578 9.4832489 2.109375 10.863281 L 2.3886719 12 L 2.109375 13.136719 C 1.7686605 14.517294 2.2423675 15.9777 3.328125 16.894531 A 1.0001 1.0001 0 0 0 3.3300781 16.894531 L 4.2246094 17.650391 L 4.6660156 18.734375 C 5.2018004 20.051342 6.4444497 20.9531 7.8613281 21.056641 L 9.0292969 21.140625 L 10.025391 21.759766 C 11.232798 22.509285 12.767202 22.509285 13.974609 21.759766 L 14.970703 21.140625 L 16.138672 21.056641 C 17.555334 20.953215 18.795886 20.051314 19.332031 18.736328 L 19.333984 18.734375 L 19.775391 17.650391 L 20.671875 16.894531 C 21.757633 15.9777 22.231836 14.518865 21.892578 13.138672 L 21.611328 12 L 21.892578 10.861328 C 22.232038 9.4816779 21.757633 8.0242535 20.671875 7.1074219 L 19.775391 6.3515625 L 19.332031 5.265625 L 19.333984 5.265625 C 18.798376 3.9492062 17.556281 3.0488075 16.138672 2.9453125 L 14.970703 2.859375 L 13.974609 2.2421875 C 13.370905 1.8674277 12.685353 1.6796875 12 1.6796875 z M 12 3.6777344 C 12.318647 3.6777344 12.637626 3.7661664 12.919922 3.9414062 L 14.125 4.6894531 A 1.0001 1.0001 0 0 0 14.580078 4.8359375 L 15.994141 4.9394531 C 16.658532 4.9879581 17.23003 5.4039502 17.480469 6.0195312 A 1.0001 1.0001 0 0 0 17.480469 6.0214844 L 18.017578 7.3339844 A 1.0001 1.0001 0 0 0 18.296875 7.7207031 L 19.380859 8.6347656 C 19.889102 9.063934 20.107759 9.7404156 19.949219 10.384766 L 19.611328 11.761719 A 1.0001 1.0001 0 0 0 19.611328 12.238281 L 19.949219 13.615234 C 20.107961 14.261041 19.889099 14.936066 19.380859 15.365234 L 18.298828 16.279297 A 1.0001 1.0001 0 0 0 18.017578 16.666016 L 17.480469 17.980469 C 17.23003 18.596053 16.658532 19.013995 15.994141 19.0625 L 14.580078 19.164062 A 1.0001 1.0001 0 0 0 14.125 19.3125 L 12.919922 20.060547 C 12.35533 20.411027 11.64467 20.411027 11.080078 20.060547 L 9.875 19.3125 A 1.0001 1.0001 0 0 0 9.4199219 19.164062 L 8.0078125 19.0625 L 8.0058594 19.0625 C 7.3435398 19.013383 6.7695069 18.594913 6.5195312 17.980469 L 5.984375 16.666016 A 1.0001 1.0001 0 0 0 5.703125 16.279297 L 4.6191406 15.365234 C 4.1108982 14.936066 3.8914958 14.262611 4.0507812 13.617188 A 1.0001 1.0001 0 0 0 4.0507812 13.615234 L 4.390625 12.238281 A 1.0001 1.0001 0 0 0 4.390625 11.761719 L 4.0507812 10.384766 A 1.0001 1.0001 0 0 0 4.0507812 10.382812 C 3.8916984 9.7388917 4.1108982 9.063934 4.6191406 8.6347656 L 5.703125 7.7207031 A 1.0001 1.0001 0 0 0 5.984375 7.3339844 L 6.5195312 6.0195312 C 6.7695069 5.4050874 7.3435429 4.9885705 8.0058594 4.9394531 L 9.4199219 4.8359375 A 1.0001 1.0001 0 0 0 9.875 4.6894531 L 11.080078 3.9414062 C 11.362374 3.7661661 11.681353 3.6777344 12 3.6777344 z M 15.980469 8.9902344 A 1.0001 1.0001 0 0 0 15.292969 9.2929688 L 11 13.585938 L 8.7070312 11.292969 A 1.0001 1.0001 0 1 0 7.2929688 12.707031 L 10.292969 15.707031 A 1.0001 1.0001 0 0 0 11.707031 15.707031 L 16.707031 10.707031 A 1.0001 1.0001 0 0 0 15.980469 8.9902344 z"/>
+                  <svg 
+                    className="w-6 h-6 text-[#1A1A1A]" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      fill="currentColor" 
+                      d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm4.293-11.707L11 13.586 8.707 11.293l-1.414 1.414L11 16.414l6.707-6.707z"
+                    />
                   </svg>
-                  <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A] max-w-[180px]">
+                  <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A] max-w-[180px]">
                     Guaranteed accuracy and on time filing
                   </p>
                 </div>
 
-                {/* Card 3 */}
+                {/* Card 3 - Document/Certificate Icon */}
                 <div className="flex flex-col items-start gap-2">
-                  <svg className="w-6 h-6 text-[#1A1A1A]" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M 11.955078 1.03125 A 1.0001 1.0001 0 0 0 11.472656 1.1796875 L 10.228516 1.953125 C 9.5900769 2.3496807 8.8649203 2.5843587 8.1152344 2.6386719 L 6.6542969 2.7460938 A 1.0001 1.0001 0 0 0 5.8027344 3.3652344 L 5.25 4.7207031 C 4.9658642 5.4174534 4.5171416 6.03422 3.9433594 6.5175781 L 2.8242188 7.4628906 A 1.0001 1.0001 0 0 0 2.4980469 8.4667969 L 2.8476562 9.8886719 C 3.026684 10.618439 3.0269991 11.379664 2.8476562 12.109375 L 2.4980469 13.53125 A 1.0001 1.0001 0 0 0 2.8242188 14.535156 L 3.4882812 15.097656 L 0.29296875 18.292969 A 1.0001 1.0001 0 0 0 0.68359375 19.949219 L 3.2089844 20.791016 L 4.0507812 23.316406 A 1.0001 1.0001 0 0 0 5.7070312 23.707031 L 9.6621094 19.751953 C 9.856361 19.838146 10.046871 19.934049 10.228516 20.046875 L 11.472656 20.820312 A 1.0001 1.0001 0 0 0 12.525391 20.820312 L 13.769531 20.050781 A 1.0001 1.0001 0 0 0 13.771484 20.050781 C 13.954075 19.937603 14.144715 19.840548 14.339844 19.753906 L 18.292969 23.707031 A 1.0001 1.0001 0 0 0 19.949219 23.316406 L 20.791016 20.791016 L 23.316406 19.949219 A 1.0001 1.0001 0 0 0 23.707031 18.292969 L 20.511719 15.097656 L 21.175781 14.537109 A 1.0001 1.0001 0 0 0 21.501953 13.533203 L 21.152344 12.113281 L 21.152344 12.111328 C 20.973316 11.381561 20.973001 10.620336 21.152344 9.890625 L 21.501953 8.46875 A 1.0001 1.0001 0 0 0 21.175781 7.4648438 L 20.056641 6.5195312 C 19.48167 6.0335246 19.034136 5.4174534 18.75 4.7207031 L 18.197266 3.3652344 A 1.0001 1.0001 0 0 0 17.345703 2.7460938 L 15.884766 2.6386719 C 15.13508 2.5843587 14.409923 2.3496807 13.771484 1.953125 L 12.527344 1.1796875 A 1.0001 1.0001 0 0 0 11.955078 1.03125 z M 12 3.2070312 L 12.716797 3.6523438 C 13.630359 4.219788 14.66792 4.5551256 15.740234 4.6328125 L 16.580078 4.6953125 L 16.898438 5.4765625 C 17.304302 6.4718122 17.944596 7.3528817 18.765625 8.046875 A 1.0001 1.0001 0 0 0 18.767578 8.0488281 L 19.412109 8.5917969 L 19.210938 9.4121094 A 1.0001 1.0001 0 0 0 19.208984 9.4121094 C 18.952485 10.455756 18.952485 11.546197 19.208984 12.589844 A 1.0001 1.0001 0 0 0 19.210938 12.589844 L 19.412109 13.410156 L 18.767578 13.953125 C 17.945529 14.646802 17.304198 15.530396 16.898438 16.525391 L 16.580078 17.306641 L 15.738281 17.369141 C 14.665911 17.447141 13.628937 17.784223 12.716797 18.349609 L 12 18.792969 L 11.283203 18.347656 C 10.370175 17.780544 9.3333653 17.445132 8.2617188 17.367188 L 8.2597656 17.367188 L 7.4199219 17.304688 L 7.1015625 16.523438 C 6.6956951 15.528188 6.0554044 14.647118 5.234375 13.953125 A 1.0001 1.0001 0 0 0 5.2324219 13.951172 L 4.5878906 13.408203 L 4.7890625 12.587891 A 1.0001 1.0001 0 0 0 4.7910156 12.587891 C 5.0475151 11.544244 5.0475151 10.453803 4.7910156 9.4101562 A 1.0001 1.0001 0 0 0 4.7890625 9.4101562 L 4.5878906 8.5898438 L 5.2324219 8.046875 C 6.0546396 7.3542331 6.6956983 6.4718122 7.1015625 5.4765625 L 7.4199219 4.6953125 L 8.2597656 4.6328125 C 9.3320797 4.5551256 10.369641 4.219788 11.283203 3.6523438 L 12 3.2070312 z M 12 6 C 10.416667 6 9.1018922 6.6297556 8.2519531 7.5859375 C 7.402014 8.5421194 7 9.7777779 7 11 C 7 12.222222 7.402014 13.457881 8.2519531 14.414062 C 9.1018922 15.370245 10.416667 16 12 16 C 13.583333 16 14.898108 15.370244 15.748047 14.414062 C 16.597986 13.457882 17 12.222222 17 11 C 17 9.7777779 16.597986 8.5421194 15.748047 7.5859375 C 14.898108 6.6297556 13.583333 6 12 6 z M 12 8 C 13.083333 8 13.768559 8.3702444 14.251953 8.9140625 C 14.735347 9.4578806 15 10.222222 15 11 C 15 11.777778 14.735347 12.542119 14.251953 13.085938 C 13.768559 13.629755 13.083333 14 12 14 C 10.916667 14 10.231441 13.629756 9.7480469 13.085938 C 9.2646532 12.542118 9 11.777778 9 11 C 9 10.222222 9.2646532 9.4578806 9.7480469 8.9140625 C 10.231441 8.3702444 10.916667 8 12 8 z M 4.8632812 16.550781 C 5.0102976 16.782862 5.1454433 17.022906 5.25 17.279297 L 5.8027344 18.634766 A 1.0001 1.0001 0 0 0 6.6542969 19.253906 L 7.2851562 19.300781 L 5.4375 21.148438 L 4.9492188 19.683594 A 1.0001 1.0001 0 0 0 4.3164062 19.050781 L 2.8515625 18.5625 L 4.8632812 16.550781 z M 19.136719 16.550781 L 21.148438 18.5625 L 19.683594 19.050781 A 1.0001 1.0001 0 0 0 19.050781 19.683594 L 18.5625 21.148438 L 16.716797 19.302734 L 17.345703 19.255859 A 1.0001 1.0001 0 0 0 18.197266 18.636719 L 18.75 17.28125 C 18.854694 17.024522 18.989403 16.783255 19.136719 16.550781 z"/>
+                  <svg 
+                    className="w-6 h-6 text-[#1A1A1A]" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      fill="currentColor" 
+                      d="M19 4H5c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H5V6h14v12zm-2-7H7v-2h10v2zm-4 4H7v-2h6v2z"
+                    />
                   </svg>
-                  <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A] max-w-[180px]">
+                  <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A] max-w-[180px]">
                     Sales permit registrations in every state
+                  </p>
+                </div>
+
+                {/* Card 4 - Audit Shield Icon */}
+                <div className="flex flex-col items-start gap-2">
+                  <svg 
+                    className="w-6 h-6 text-[#1A1A1A]" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      fill="currentColor" 
+                      d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"
+                    />
+                  </svg>
+                  <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A] max-w-[180px]">
+                    Audit-ready documentation and defense
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Right Image - 40% */}
-            <div className="w-[40%] flex items-start justify-end">
+            {/* Right Image - 25% */}
+            {/* <div className="w-[25%] flex items-start justify-end">
               <img 
-                src="https://static.intercomassets.com/ember/assets/images/hero-banners/images/users-segments-all-users-94bbb7157bb799e4a8cc748bc54846ef.png"
-                alt="Sales tax automation illustration"
-                className="h-[200px] w-auto object-contain"
+                src="/footer-blobs-desktop.png"
+                alt="Sales tax illustration"
+                className="h-[250px] w-auto object-contain"
               />
-            </div>
-          </div>
-
-          {/* Toggle Card */}
-          <div className="border border-[#E4E5E1] rounded-lg p-4">
-            <div className="flex items-center">
-              {/* Toggle Switch - Disabled */}
-              <div
-                className={`relative inline-flex h-[16px] w-[32px] flex-shrink-0 rounded-full border-2 border-transparent bg-[#E4E5E1] opacity-50 cursor-not-allowed`}
-              >
-                <span
-                  className="pointer-events-none inline-block h-[12px] w-[12px] transform rounded-full bg-white shadow ring-0"
-                />
-              </div>
-              
-              <div className="flex items-center gap-[10px] ml-4">
-                <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
-                  Enable sales tax service
-                </p>
-              </div>
-            </div>
+            </div> */}
           </div>
         </div>
+
+        {/* FAQ Card */}
+        <div className="rounded-[14px] bg-white">
+          {/* Card header */}
+          <div className="px-6 py-5 border-b border-[#E4E5E1]">
+            <h2 className="text-[16px] leading-[20px] font-[500] font-oracle text-[#1A1A1A]">
+              Frequently asked questions
+            </h2>
+          </div>
+
+          {/* FAQ Questions */}
+          <div>
+            {faqs.map((faq) => (
+              <FAQQuestion
+                key={faq.id}
+                question={faq.question}
+                answer={faq.answer}
+                isExpanded={expandedQuestions.has(faq.id)}
+                onToggle={() => toggleQuestion(faq.id)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Add disclaimer text - without hyperlink */}
+        <div className="mt-3">
+          <p className="text-[12px] leading-[18px] font-oracle font-[450] text-[#858585]">
+            Sales tax compliance involves complex state and local regulations that vary by jurisdiction. 
+            While we help facilitate sales tax compliance through our platform, we do not provide legal or professional services.
+          </p>
+        </div>
       </div>
-    </>
+    </div>
   )
 } 

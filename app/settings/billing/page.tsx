@@ -48,7 +48,7 @@ export default function Billing() {
   ])
 
   // Common input classes for reuse
-  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
+  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
 
   const tabs = [
     { id: 'overview', label: 'Overview' },
@@ -60,7 +60,7 @@ export default function Billing() {
       {/* Fixed Header */}
       <div className="px-6 pr-[24px] py-4 border-b border-[#E4E5E1]">
         <div className="flex justify-between items-center">
-          <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+          <h1 className="text-[20px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
             Billing
           </h1>
         </div>
@@ -73,7 +73,7 @@ export default function Billing() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-3 text-[14px] leading-[20px] font-medium font-['Inter'] border-b-2 transition-colors ${
+              className={`py-3 text-[14px] leading-[20px] font-medium font-oracle border-b-2 transition-colors ${
                 activeTab === tab.id 
                   ? 'border-[#1A1A1A] text-[#1A1A1A]' 
                   : 'border-transparent text-[#646462] hover:text-[#1A1A1A]'
@@ -92,7 +92,7 @@ export default function Billing() {
             <>
               {/* Add banner at the very top */}
               <div className="bg-[#FFF4EB] border border-[#FFB77E] rounded-xl px-4 py-3 relative">
-                <p className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] flex items-center gap-1.5">
+                <p className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] flex items-center gap-1.5">
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     width="16" 
@@ -114,10 +114,10 @@ export default function Billing() {
                 <div className="flex gap-24">
                   {/* Left side */}
                   <div className="flex-1">
-                    <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                    <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                       Current plan
                     </h2>
-                    <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                    <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                       Manage your subscription plan and billing cycle.
                     </p>
                   </div>
@@ -126,7 +126,7 @@ export default function Billing() {
                   <div className="flex-1">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                        <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                           Plan
                         </label>
                         <div className="relative">
@@ -155,10 +155,10 @@ export default function Billing() {
                 <div className="flex gap-24">
                   {/* Left side */}
                   <div className="flex-1">
-                    <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                    <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                       Payment method
                     </h2>
-                    <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                    <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                       Manage your payment methods and billing information.
                     </p>
                   </div>
@@ -167,7 +167,7 @@ export default function Billing() {
                   <div className="flex-1">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                        <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                           Card
                         </label>
                         
@@ -189,10 +189,10 @@ export default function Billing() {
                               />
                             </div>
                             <div className="flex flex-col py-0.5">
-                              <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                              <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                                 Visa ending in 4242
                               </span>
-                              <span className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#646462]">
+                              <span className="text-[14px] leading-[20px] font-normal font-oracle text-[#646462]">
                                 Expires 12/2024
                               </span>
                             </div>
@@ -213,10 +213,10 @@ export default function Billing() {
                               />
                             </div>
                             <div className="flex flex-col py-0.5">
-                              <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                              <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                                 Mastercard ending in 8888
                               </span>
-                              <span className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#646462]">
+                              <span className="text-[14px] leading-[20px] font-normal font-oracle text-[#646462]">
                                 Expires 08/2025
                               </span>
                             </div>
@@ -240,7 +240,7 @@ export default function Billing() {
                             d="M 12.232422 1.9824219 A 1.250125 1.250125 0 0 0 11.001953 3.25 L 11.001953 10.992188 L 3.2460938 10.992188 A 1.250125 1.250125 0 1 0 3.2460938 13.492188 L 11.001953 13.492188 L 11.001953 20.775391 A 1.250125 1.250125 0 1 0 13.501953 20.775391 L 13.501953 13.492188 L 20.755859 13.492188 A 1.250125 1.250125 0 1 0 20.755859 10.992188 L 13.501953 10.992188 L 13.501953 3.25 A 1.250125 1.250125 0 0 0 12.232422 1.9824219 z"
                           />
                         </svg>
-                        <span className="font-semibold leading-[16px] font-['Inter'] text-[14px] text-[#1A1A1A]">Add card</span>
+                        <span className="font-[500] leading-[16px] font-oracle text-[14px] text-[#1A1A1A]">Add card</span>
                       </button>
                     </div>
                   </div>
@@ -252,10 +252,10 @@ export default function Billing() {
                 <div className="flex gap-24">
                   {/* Left side */}
                   <div className="flex-1">
-                    <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                    <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                       Billing address
                     </h2>
-                    <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                    <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                       The address associated with your payment method.
                     </p>
                   </div>
@@ -264,7 +264,7 @@ export default function Billing() {
                   <div className="flex-1">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                        <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                           Street address
                         </label>
                         <input 
@@ -277,7 +277,7 @@ export default function Billing() {
                       </div>
 
                       <div>
-                        <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                        <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                           Street address line 2
                         </label>
                         <input 
@@ -291,7 +291,7 @@ export default function Billing() {
 
                       <div className="grid grid-cols-3 gap-4">
                         <div>
-                          <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                          <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                             City
                           </label>
                           <input 
@@ -304,7 +304,7 @@ export default function Billing() {
                         </div>
 
                         <div>
-                          <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                          <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                             State
                           </label>
                           <div className="relative">
@@ -330,7 +330,7 @@ export default function Billing() {
                         </div>
 
                         <div>
-                          <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                          <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                             ZIP code
                           </label>
                           <input 
@@ -351,29 +351,29 @@ export default function Billing() {
 
           {activeTab === 'invoices' && (
             <div className="space-y-4">
-              <h2 className="text-[18px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+              <h2 className="text-[18px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
                 Invoice history
               </h2>
 
               {/* Invoice table */}
               <div className="w-[600px]">
                 <div className="grid grid-cols-4 gap-4 py-2 border-b border-[#E4E5E1]">
-                  <div className="text-[14px] leading-[20px] font-semibold font-['Inter'] text-[#646462]">
+                  <div className="text-[14px] leading-[20px] font-[500] font-oracle text-[#646462]">
                     ID
                   </div>
-                  <div className="text-[14px] leading-[20px] font-semibold font-['Inter'] text-[#646462]">
+                  <div className="text-[14px] leading-[20px] font-[500] font-oracle text-[#646462]">
                     Date
                   </div>
-                  <div className="text-[14px] leading-[20px] font-semibold font-['Inter'] text-[#646462]">
+                  <div className="text-[14px] leading-[20px] font-[500] font-oracle text-[#646462]">
                     Invoice Total
                   </div>
-                  <div className="text-[14px] leading-[20px] font-semibold font-['Inter'] text-[#646462]">
+                  <div className="text-[14px] leading-[20px] font-[500] font-oracle text-[#646462]">
                     Balance Due
                   </div>
                 </div>
 
                 {invoices.length === 0 ? (
-                  <div className="py-4 text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+                  <div className="py-4 text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
                     No invoices yet.
                   </div>
                 ) : (
@@ -407,18 +407,18 @@ export default function Billing() {
                           </svg>
                         </div>
 
-                        <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
+                        <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
                           <span className="block transition-transform group-hover:translate-x-2">
                             {invoice.id}
                           </span>
                         </div>
-                        <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
+                        <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
                           {invoice.date}
                         </div>
-                        <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
+                        <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
                           {invoice.total}
                         </div>
-                        <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
+                        <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
                           {invoice.balance}
                         </div>
                       </div>

@@ -5,9 +5,16 @@ interface DocumentRowMenuProps {
   onArchive: () => void;
   onDownload: () => void;
   isRowHovered: boolean;
+  isProjectView?: boolean;
 }
 
-export default function DocumentRowMenu({ onEditNote, onArchive, onDownload, isRowHovered }: DocumentRowMenuProps) {
+export default function DocumentRowMenu({ 
+  onEditNote, 
+  onArchive, 
+  onDownload, 
+  isRowHovered,
+  isProjectView = false
+}: DocumentRowMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -61,25 +68,25 @@ export default function DocumentRowMenu({ onEditNote, onArchive, onDownload, isR
                 onEditNote();
                 setIsOpen(false);
               }}
-              className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]"
+              className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]"
             >
-              Edit note
+              Update document
             </button>
             <button 
               onClick={() => {
                 onArchive();
                 setIsOpen(false);
               }}
-              className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]"
+              className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]"
             >
-              Remove
+              {isProjectView ? 'Remove from project' : 'Remove'}
             </button>
             <button 
               onClick={() => {
                 onDownload();
                 setIsOpen(false);
               }}
-              className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]"
+              className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]"
             >
               Download
             </button>

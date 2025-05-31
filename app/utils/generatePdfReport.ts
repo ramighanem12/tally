@@ -68,29 +68,42 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
   // Get page dimensions and calculate centers early
   const pageWidth = doc.internal.pageSize.width;
   const pageHeight = doc.internal.pageSize.height;
-  const startX = pageWidth * 0.67;  // Start at right third
   const centerY = pageHeight / 2;
 
-  // Add diagonal lines pattern to right third
-  doc.setDrawColor(60, 88, 168);
-  doc.setLineWidth(0.25);
+  // Fill background with 75% white (changed from 70%)
+  doc.setFillColor(255, 255, 255);
+  doc.setGState(new (doc as any).GState({ opacity: 0.75 }));
+  doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  // Draw diagonal lines pattern
-  for (let i = -pageHeight; i < pageHeight * 2; i += LINE_SPACING) {
-    doc.setGState(new (doc as any).GState({ opacity: 0.08 }));
-    doc.line(
-      startX, i,
-      pageWidth, i + pageWidth/2
+  // Reset opacity for gradient
+  doc.setGState(new (doc as any).GState({ opacity: 1 }));
+
+  // Create gradient effect to blue (0066FF)
+  const numStrips = 200;
+  const stripWidth = pageWidth / numStrips;
+  
+  for (let i = 0; i < numStrips; i++) {
+    const ratio = i / numStrips;
+    const transitionRatio = Math.pow(ratio, 8);
+    
+    const r = Math.round(255 * (1 - transitionRatio));
+    const g = Math.round(255 - ((255 - 102) * transitionRatio));
+    const b = 255;
+    
+    doc.setFillColor(r, g, b);
+    doc.rect(
+      i * stripWidth,
+      0,
+      stripWidth + 0.5,
+      pageHeight,
+      'F'
     );
   }
 
-  // Reset opacity
-  doc.setGState(new (doc as any).GState({ opacity: 1 }));
-
-  // Add Assure Advisors text above header
+  // Add text content
   doc.setFontSize(24);
   doc.setFont('Helvetica', 'normal');
-  doc.text('Assure Advisors', 20, centerY - 25);
+  doc.text('Clarity Advisors', 20, centerY - 25);
 
   // Title - larger and bold
   doc.setFontSize(34);
@@ -116,17 +129,9 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
   doc.addPage();
   doc.setPage(2);
 
-  // Add diagonal lines pattern to right third
-  doc.setDrawColor(60, 88, 168);
-  doc.setLineWidth(0.25);
-  for (let i = -pageHeight; i < pageHeight * 2; i += LINE_SPACING) {
-    doc.setGState(new (doc as any).GState({ opacity: 0.08 }));
-    doc.line(
-      startX, i,
-      pageWidth, i + pageWidth/2
-    );
-  }
-  doc.setGState(new (doc as any).GState({ opacity: 1 }));
+  // Fill with white background
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
   // Title for What's in the plan
   doc.setFontSize(26);
@@ -168,7 +173,7 @@ export const generatePdfReport = async (strategies: Strategy[]) => {
   const disclaimerText = [
     'All tax planning, strategies, advice and recommendations in this plan are based on the taxpayer\'s available tax return data, information disclosed to us, and current tax law. Tax laws can and do change frequently. Federal, state, local, payroll, property and other taxes often overlap and involve complexities that rarely yield a single best strategy. Effective tax planning is a lifelong process. It requires regular updates to review the taxpayer\'s goals, life changes, investments, businesses, changes in income, pre-tax opportunities, retirement planning, state and local taxation, and more.',
     
-    'Tax projections and recommendations include assumptions and should not be viewed as guarantees. The actual results will vary from projections. The actual tax savings will vary from the estimated tax savings. These plans and projections are only a guide, not a promise. These plans are generated using services provided by Assure and provided without warranty of any kind, express or implied. While effort has been made to ensure accuracy, Assure won\'t accept responsibility for any errors or omissions, or for any consequences arising from use of the services.',
+    'Tax projections and recommendations include assumptions and should not be viewed as guarantees. The actual results will vary from projections. The actual tax savings will vary from the estimated tax savings. These plans and projections are only a guide, not a promise. These plans are generated using services provided by Clarity and provided without warranty of any kind, express or implied. While effort has been made to ensure accuracy, Clarity won\'t accept responsibility for any errors or omissions, or for any consequences arising from use of the services.',
     
     'Tax planning is a team exercise. Many of the tax savings estimated in this plan are dependent upon taxpayers completing certain action items. If taxpayers fail to take necessary actions, the tax strategies may not yield the estimated benefit. Success is also dependent upon regular communication about changes in the taxpayers\' circumstances to our firm, so we can evaluate the impact of changes on the taxpayer\'s tax plan.',
     

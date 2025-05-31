@@ -148,10 +148,19 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Add documents</h2>
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-500 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
+          <div className="flex items-center justify-between px-6 pt-5">
+            <h2 className="text-[18px] leading-[24px] font-medium font-oracle text-[#1A1A1A]">
+              Add documents
+            </h2>
+            <button 
+              onClick={onClose} 
+              className="p-1 rounded-lg hover:bg-[#F0F0F0] transition-colors"
+            >
+              <svg 
+                className="w-4 h-4 text-[#1A1A1A]" 
+                viewBox="0 0 16 16" 
+                fill="none"
+              >
                 <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
@@ -169,7 +178,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`
-                    py-3 px-1 inline-flex items-center gap-2 border-b-2 text-sm font-medium
+                    py-3 px-1 inline-flex items-center gap-2 border-b-2 text-sm font-[500]
                     ${tab === activeTab
                       ? 'border-gray-900 text-gray-900'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -273,7 +282,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                                 </div>
                               </div>
                             </th>
-                            <th className="pl-[18px] pr-6 py-1.5 text-left text-[13px] font-medium text-gray-500">
+                            <th className="pl-[18px] pr-6 py-1.5 text-left text-[13px] font-[500] text-gray-500">
                               <button 
                                 onClick={handleSort}
                                 className="inline-flex items-center gap-2 hover:text-gray-700"
@@ -324,7 +333,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                                     <path d="M5.5 6.5H10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                                     <path d="M5.5 9.5H10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                                   </svg>
-                                  <span className="text-[14px] font-medium text-gray-900 truncate">{doc.name}</span>
+                                  <span className="text-[14px] font-[500] text-gray-900 truncate">{doc.name}</span>
                                 </div>
                               </td>
                             </tr>
@@ -337,7 +346,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                         onClick={handleImport}
                         disabled={selectedDocuments.length === 0}
                         className={`
-                          px-4 py-2 text-[13px] font-medium rounded-[9px]
+                          px-4 py-2 text-[13px] font-[500] rounded-[9px]
                           ${selectedDocuments.length === 0
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                             : 'bg-gray-900 text-white hover:bg-gray-800'
@@ -397,7 +406,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                                 </div>
                               </div>
                             </th>
-                            <th className="pl-[18px] pr-6 py-1.5 text-left text-[13px] font-medium text-gray-500">
+                            <th className="pl-[18px] pr-6 py-1.5 text-left text-[13px] font-[500] text-gray-500">
                               <button 
                                 onClick={handleSort}
                                 className="inline-flex items-center gap-2 hover:text-gray-700"
@@ -450,7 +459,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                                   <svg className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" viewBox="0 0 16 16" fill="none">
                                     <path d="M2.5 13.5V5.5C2.5 4.94772 2.94772 4.5 3.5 4.5H6.5L8 6H12.5C13.0523 6 13.5 6.44772 13.5 7V13.5C13.5 14.0523 13.0523 14.5 12.5 14.5H3.5C2.94772 14.5 2.5 14.0523 2.5 13.5Z" stroke="currentColor" strokeWidth="1.5"/>
                                   </svg>
-                                  <span className="text-[14px] font-medium text-gray-900 truncate">
+                                  <span className="text-[14px] font-[500] text-gray-900 truncate">
                                     {project.name} ({project.fileCount} file{project.fileCount === 1 ? '' : 's'})
                                   </span>
                                 </div>
@@ -471,7 +480,7 @@ export default function UploadModal({ isOpen, onClose, onUpload, onImport, avail
                         }}
                         disabled={selectedProjects.length === 0}
                         className={`
-                          px-4 py-2 text-[13px] font-medium rounded-[9px]
+                          px-4 py-2 text-[13px] font-[500] rounded-[9px]
                           ${selectedProjects.length === 0
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                             : 'bg-gray-900 text-white hover:bg-gray-800'

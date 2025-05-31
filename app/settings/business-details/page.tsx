@@ -71,7 +71,7 @@ export default function BusinessDetailsPage() {
   const { setBusinessDetails, refreshBusinessDetails } = useBusinessDetails()
 
   // Common input classes for reuse
-  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
+  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
   
   // Entity type options
   const entityTypes = [
@@ -492,13 +492,13 @@ export default function BusinessDetailsPage() {
       {/* Fixed Header */}
       <div className="px-6 pr-[24px] py-4 border-b border-[#E4E5E1]">
         <div className="flex justify-between items-center">
-          <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+          <h1 className="text-[20px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
             Business details
           </h1>
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors flex items-center gap-2"
+            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-oracle font-[500] text-[14px] leading-[16px] transition-colors flex items-center gap-2"
           >
             {isSaving ? (
               <>
@@ -554,7 +554,7 @@ export default function BusinessDetailsPage() {
                     />
                   </svg>
                 </button>
-                <p className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] flex items-center gap-1.5">
+                <p className="text-[14px] leading-[20px] font-oracle text-[#1A1A1A] flex items-center gap-1.5">
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     width="16" 
@@ -578,10 +578,10 @@ export default function BusinessDetailsPage() {
             <div className="flex gap-24">
               {/* Left side */}
               <div className="flex-1">
-                <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                   Business details
                 </h2>
-                <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                   Your company's legal information for tax and compliance purposes.
                 </p>
               </div>
@@ -590,7 +590,7 @@ export default function BusinessDetailsPage() {
               <div className="flex-1">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Company legal name
                     </label>
                     <input 
@@ -603,7 +603,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       DBA name
                     </label>
                     <input 
@@ -616,7 +616,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Entity type
                     </label>
                     <div className="relative">
@@ -642,7 +642,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       State of Incorporation
                     </label>
                     <div className="relative">
@@ -668,7 +668,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       EIN
                     </label>
                     <input 
@@ -693,14 +693,14 @@ export default function BusinessDetailsPage() {
                       }`}
                     />
                     {formData.ein && !validateEIN(formData.ein) && (
-                      <p className="mt-1 text-[12px] leading-[16px] font-normal font-['Inter'] text-red-500">
+                      <p className="mt-1 text-[12px] leading-[16px] font-oracle text-red-500">
                         Please enter a valid 9-digit EIN
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Incorporation date
                     </label>
                     <input 
@@ -713,7 +713,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Fiscal period
                     </label>
                     <div className="relative">
@@ -743,10 +743,10 @@ export default function BusinessDetailsPage() {
             <div className="flex gap-24">
               {/* Left side */}
               <div className="flex-1">
-                <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                   Organization logo
                 </h2>
-                <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                   Upload your organization's logo. This will be displayed in various places across the platform.
                 </p>
               </div>
@@ -799,14 +799,14 @@ export default function BusinessDetailsPage() {
                       <div className="flex gap-1.5">
                         <label
                           htmlFor="logo-upload"
-                          className="bg-[#F0F1EF] hover:bg-[#E4E5E1] text-[#1A1A1A] px-3.5 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors cursor-pointer flex items-center"
+                          className="bg-[#F0F1EF] hover:bg-[#E4E5E1] text-[#1A1A1A] px-3.5 h-[32px] rounded-full font-oracle font-[500] text-[14px] leading-[16px] transition-colors cursor-pointer flex items-center"
                         >
                           Choose file
                         </label>
                         {(logoPreview || formData.logo_url) && (
                           <button
                             onClick={handleRemoveLogo}
-                            className="inline-flex items-center px-3.5 h-[32px] bg-white border border-[#E4E5E1] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] text-[#1A1A1A] hover:border-[#BBBDB7] transition-colors"
+                            className="inline-flex items-center px-3.5 h-[32px] bg-white border border-[#E4E5E1] rounded-full font-oracle font-[500] text-[14px] leading-[16px] text-[#1A1A1A] hover:border-[#BBBDB7] transition-colors"
                           >
                             Remove
                           </button>
@@ -814,7 +814,7 @@ export default function BusinessDetailsPage() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-[12px] leading-[16px] font-['Inter'] text-[#646462]">
+                  <p className="text-[12px] leading-[16px] font-oracle text-[#646462]">
                     Recommended size: 256x256 pixels. Maximum file size: 5MB.
                   </p>
                 </div>
@@ -827,10 +827,10 @@ export default function BusinessDetailsPage() {
             <div className="flex gap-24">
               {/* Left side */}
               <div className="flex-1">
-                <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                   Business address
                 </h2>
-                <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                   Your business address will be used for invoicing and tax purposes.
                 </p>
               </div>
@@ -839,7 +839,7 @@ export default function BusinessDetailsPage() {
               <div className="flex-1">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Street address
                     </label>
                     <input 
@@ -854,7 +854,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Street address line 2
                     </label>
                     <input 
@@ -868,7 +868,7 @@ export default function BusinessDetailsPage() {
 
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                      <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                         City
                       </label>
                       <input 
@@ -881,7 +881,7 @@ export default function BusinessDetailsPage() {
                     </div>
 
                     <div>
-                      <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                      <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                         State
                       </label>
                       <div className="relative">
@@ -907,7 +907,7 @@ export default function BusinessDetailsPage() {
                     </div>
 
                     <div>
-                      <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                      <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                         ZIP code
                       </label>
                       <input 
@@ -929,10 +929,10 @@ export default function BusinessDetailsPage() {
             <div className="flex gap-24">
               {/* Left side */}
               <div className="flex-1">
-                <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                   Business activity
                 </h2>
-                <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                   Information about your business operations and scale.
                 </p>
               </div>
@@ -941,7 +941,7 @@ export default function BusinessDetailsPage() {
               <div className="flex-1">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Industry/NAICS code
                     </label>
                     <div className="relative">
@@ -967,7 +967,7 @@ export default function BusinessDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       Estimated revenue range
                     </label>
                     <div className="relative">

@@ -1,5 +1,6 @@
 import JSZip from 'jszip'
 import { toast } from 'react-hot-toast'
+import { saveAs } from 'file-saver'
 
 // Helper function for downloading single files
 export const downloadSingleFile = async (url: string, filename: string) => {
@@ -33,7 +34,7 @@ const downloadFile = async (url: string, filename: string) => {
 };
 
 // Main function to handle multiple file downloads
-export const downloadMultipleFiles = async (files: { url: string; name: string }[]) => {
+export const downloadMultipleFiles = async (files: { url: string; name: string }[], zipFileName: string = 'documents.zip') => {
   const zip = new JSZip();
   
   const downloadPromises = files.map(file => 
@@ -48,15 +49,7 @@ export const downloadMultipleFiles = async (files: { url: string; name: string }
     }
   });
   
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  const zipUrl = URL.createObjectURL(zipBlob);
-  
-  const link = document.createElement('a');
-  link.href = zipUrl;
-  link.download = 'documents.zip';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  
-  URL.revokeObjectURL(zipUrl);
+  zip.generateAsync({ type: 'blob' }).then(function(content) {
+    saveAs(content, zipFileName);
+  });
 }; 

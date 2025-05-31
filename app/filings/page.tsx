@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
 import { format } from 'date-fns'
 import FilingModal from "../components/FilingModal"
-import FilingsFilters from "../components/FilingsFilters"
 import FilingRowMenu from '../components/FilingRowMenu'
 import Image from 'next/image'
 import UpcomingFilingRowMenu from '../components/UpcomingFilingRowMenu'
@@ -14,6 +13,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'react-hot-toast'
 import { downloadSingleFile, downloadMultipleFiles } from '../utils/fileDownload'
+import TypeFilter from "../components/TypeFilter"
 
 // Add types
 type Filing = {
@@ -26,6 +26,7 @@ type Filing = {
   confirmation?: string;
   authority: string;
   url?: string;  // Add URL field for associated document
+  amount?: string; // Add this field
 }
 
 type Month = {
@@ -75,7 +76,6 @@ export default function FilingsPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('upcoming');
-  const [isLoading, setIsLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
@@ -105,22 +105,31 @@ export default function FilingsPage() {
   const [completedFilings, setCompletedFilings] = useState<Filing[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const hasInitialFetch = useRef(false);
+  const [typeFilter, setTypeFilter] = useState<string[]>([]);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
   // Move these outside of the filtering logic
   const upcomingCount = upcomingFilings.length;
   const completedCount = completedFilings.length;
 
-  // Update the tabs to use the counts
+  // Update the tabs definition to only show count for upcoming
   const tabs = [
-    { id: 'upcoming', label: 'Upcoming', count: upcomingCount },
-    { id: 'completed', label: 'Completed', count: completedCount }
+    { 
+      id: 'upcoming', 
+      label: `Upcoming${upcomingCount > 0 ? ` (${upcomingCount})` : ''}`
+    },
+    { 
+      id: 'completed', 
+      label: 'Completed'
+    }
   ];
 
   // Fetch both types of filings at once
   const fetchFilings = async () => {
-    if (!user) return;
+    if (!user || hasInitialFetch.current) return;
     
-    setIsLoading(true);
     try {
       // Fetch upcoming filings
       const { data: upcomingData, error: upcomingError } = await supabase
@@ -148,7 +157,7 @@ export default function FilingsPage() {
       console.error('Error fetching filings:', error);
       toast.error('Failed to load filings');
     } finally {
-      setIsLoading(false);
+      hasInitialFetch.current = true;
     }
   };
 
@@ -198,19 +207,26 @@ export default function FilingsPage() {
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  // Get unique types from your filings
+  const uniqueTypes = Array.from(new Set(currentFilings.map(filing => filing.type)));
+
+  // Update your filtering logic to include type filter
   const filteredFilings = activeTabFilings.filter(filing => {
     const filingDate = new Date(filing.date);
     const fromDate = dateRangeFilter.from ? new Date(dateRangeFilter.from) : null;
     const toDate = dateRangeFilter.to ? new Date(dateRangeFilter.to) : null;
     
-    return (searchText ? (
+    const matchesSearch = (searchText ? (
       filing.name.toLowerCase().includes(searchText.toLowerCase()) ||
       filing.authority.toLowerCase().includes(searchText.toLowerCase())
-    ) : true) &&
-    (authorityFilter.length > 0 ? authorityFilter.includes(filing.authority) : true) &&
-    (statusFilter.length > 0 ? statusFilter.includes(filing.status) : true) &&
-    (!fromDate || filingDate >= fromDate) &&
-    (!toDate || filingDate <= toDate);
+    ) : true);
+    const matchesTypeFilter = typeFilter.length === 0 || typeFilter.includes(filing.type);
+    const matchesAuthorityFilter = authorityFilter.length === 0 || authorityFilter.includes(filing.authority);
+    const matchesStatusFilter = statusFilter.length === 0 || statusFilter.includes(filing.status);
+    
+    return matchesSearch && matchesTypeFilter && matchesAuthorityFilter && matchesStatusFilter &&
+      (!fromDate || filingDate >= fromDate) &&
+      (!toDate || filingDate <= toDate);
   });
 
   // Get unique authorities for the dropdown
@@ -257,95 +273,45 @@ export default function FilingsPage() {
   }, []);
 
   return (
-    <>
-      <div className="h-screen flex overflow-hidden">
-        <CopilotNavigation selectedTab="filings" />
-        <div className="flex-1 p-[9px] pl-0 bg-[#F0F0F0] overflow-hidden">
-          <div className="h-full flex flex-col">
-            {/* Header row with Filings title and tabs */}
-            <div className="flex items-center justify-between px-2 py-2 mb-[9px]">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
-                    Filings
-                  </h1>
-                  <div 
-                    ref={menuRef}
-                    className="relative"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      onClick={() => setIsMenuOpen(!isMenuOpen)}
-                      className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-[#F7F7F6] transition-colors"
-                    >
-                      <svg 
-                        width="16" 
-                        height="16" 
-                        viewBox="0 0 16 16"
-                        className="text-[#646462]"
-                      >
-                        <path 
-                          fill="currentColor"
-                          d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM3 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
-                        />
-                      </svg>
-                    </button>
+    <div className="h-screen flex overflow-hidden">
+      <CopilotNavigation selectedTab="filings" />
+      <div className="flex-1 p-[9px] pl-0 bg-[#F3F6F6] overflow-hidden">
+        {/* Main content card - make it full height */}
+        <main className="h-full rounded-[14px] bg-white overflow-hidden flex flex-col">
+          {/* Header section */}
+          <div className="pl-4 pr-6 py-4 border-b border-[#E4E5E1]">
+            <div className="flex justify-between items-center">
+              <h1 className="text-[20px] leading-[24px] font-medium font-oracle text-[#1A1A1A]">
+                Filings
+              </h1>
 
-                    {isMenuOpen && (
-                      <div className="absolute left-full top-0 ml-1 bg-white border border-[#E4E4E4] rounded-lg shadow-lg p-2 min-w-[160px] z-50">
-                        <div className="space-y-[2px]">
-                          <button 
-                            onClick={() => {
-                              // Handle click
-                              setIsMenuOpen(false);
-                            }}
-                            className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]"
-                          >
-                            Download all
-                          </button>
-                          <button 
-                            onClick={() => {
-                              // Handle click
-                              setIsMenuOpen(false);
-                            }}
-                            className="w-full text-left px-2 py-1.5 rounded-md hover:bg-[#F7F7F7] transition-colors text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]"
-                          >
-                            Archive selected
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Tab switcher */}
-              <div className="flex gap-6 relative border-b border-[#E4E5E1]">
+              {/* Tab switcher on the right */}
+              <div className="flex gap-2">
                 {tabs.map(({ id, label }) => (
                   <button
                     key={id}
                     onClick={() => setActiveTab(id)}
-                    className={`pb-2 relative ${
+                    className={`px-2.5 py-1 rounded-md text-[14px] leading-[20px] font-medium font-oracle transition-colors ${
                       activeTab === id 
-                        ? 'text-[#1A1A1A]' 
+                        ? 'bg-[#F7F7F6] text-[#1A1A1A]'
                         : 'text-[#646462] hover:text-[#1A1A1A]'
                     }`}
                   >
-                    <span className="text-[14px] leading-[20px] font-medium font-['Inter']">
+                    <span>
                       {label}
                     </span>
-                    {activeTab === id && (
-                      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1A1A1A] rounded-t-full" />
-                    )}
                   </button>
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Main content card */}
-            <main className="flex-1 rounded-[14px] bg-white/60 overflow-hidden flex flex-col">
-              {/* Search Row */}
-              <div className="px-6 pr-[24px] py-3">
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="px-4 pr-4 pt-3">
+              {/* Add space-y-3 to create consistent spacing */}
+              <div className="space-y-3">
+                {/* Search Row */}
                 <div className="flex items-center justify-between">
                   {/* Search Bar */}
                   <div className="w-[320px]">
@@ -355,7 +321,7 @@ export default function FilingsPage() {
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                         placeholder="Search..."
-                        className="w-full h-[32px] pl-8 pr-3 rounded-lg border border-[#E4E4E4] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] placeholder-[#9A9A99] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none transition-colors"
+                        className="w-full h-[32px] pl-8 pr-3 rounded-lg border border-[#E4E4E4] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] placeholder-[#9A9A99] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none transition-colors"
                       />
                       <Image 
                         src="/Vector (4).svg"
@@ -402,173 +368,246 @@ export default function FilingsPage() {
                             toast.error('Failed to download file(s)');
                           }
                         }}
-                        className="bg-white hover:bg-[#F7F7F6] text-[#1A1A1A] px-3.5 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors flex items-center gap-2 border border-[#E4E5E1]"
+                        className="bg-white hover:bg-[#F7F7F6] text-[#1A1A1A] px-3 h-[28px] rounded-full font-oracle font-[500] text-[14px] leading-[20px] transition-colors border border-[#E4E5E1]"
                       >
-                        <span>{selectedCompletedFilings.size > 1 ? 'Download all' : 'Download'}</span>
+                        {selectedCompletedFilings.size > 1 ? 'Download all' : 'Download'}
                       </button>
                     </div>
                   )}
                 </div>
-              </div>
 
-              {/* Table */}
-              <div className="px-6 pr-[24px]">
-                {/* Table content */}
+                {/* Table */}
                 <div className="w-full">
-                  {/* Update header row styles with conditional columns */}
+                  {/* Table header - fix padding/margin */}
                   <div className={`grid ${
-                    activeTab === 'completed'
-                      ? 'grid-cols-[24px_2fr_1fr_1fr_1fr_32px]'
-                      : 'grid-cols-[24px_2fr_1fr_1fr_1fr_32px]'
-                  } gap-4 py-1.5 border-t border-[#E4E5E1] border-b border-b-[#E4E5E1]/50 px-6 -mx-6 bg-white/80`}>
-                    {/* Add checkbox header cell */}
-                    <div className="w-4 flex items-center">
-                      <div className="relative w-4 h-4">
-                        <input
-                          type="checkbox"
-                          className="peer absolute opacity-0 w-4 h-4 cursor-pointer z-10"
-                          checked={allFilingsSelected}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedFilings(new Set(filteredFilings.map(filing => filing.id)));
-                            } else {
-                              setSelectedFilings(new Set());
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-0 border border-[#E4E5E1] rounded-[4px] bg-white peer-hover:border-[#1A1A1A] peer-checked:bg-[#1A1A1A] peer-checked:border-[#1A1A1A] transition-all" />
-                        <svg 
-                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path 
-                            d="M2.5 6L5 8.5L9.5 4"
-                            stroke="white"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
+                    activeTab === 'upcoming'
+                      ? 'grid-cols-[2fr_1fr_1fr_1fr_1fr_32px]'
+                      : 'grid-cols-[24px_2fr_1fr_1fr_1fr_1fr_32px]'
+                  } gap-4 py-1.5 border-t border-[#E4E5E1] border-b border-b-[#E4E5E1]/50 px-4 -mx-4 bg-white/80`}>
+                    {/* Only show checkbox in completed tab */}
+                    {activeTab === 'completed' && (
+                      <div className="w-4 flex items-center">
+                        <div className="relative w-4 h-4">
+                          <input
+                            type="checkbox"
+                            className="peer absolute opacity-0 w-4 h-4 cursor-pointer z-10"
+                            checked={allFilingsSelected}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedFilings(new Set(filteredFilings.map(filing => filing.id)));
+                              } else {
+                                setSelectedFilings(new Set());
+                              }
+                            }}
                           />
-                        </svg>
+                          <div className="absolute inset-0 border border-[#E4E5E1] rounded-[4px] bg-white peer-hover:border-[#1A1A1A] peer-checked:bg-[#1A1A1A] peer-checked:border-[#1A1A1A] transition-all" />
+                          <svg 
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path 
+                              d="M2.5 6L5 8.5L9.5 4"
+                              stroke="white"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-[13px] leading-[18px] font-semibold font-['Inter'] text-[#646462]">
+                    )}
+
+                    {/* Filing name */}
+                    <div className="text-[13px] leading-[18px] font-medium font-oracle text-[#646462]">
                       Filing
                     </div>
-                    <div className="text-[13px] leading-[18px] font-semibold font-['Inter'] text-[#646462] relative">
-                      <FilingsFilters
-                        authorityFilter={authorityFilter}
-                        setAuthorityFilter={setAuthorityFilter}
-                        uniqueAuthorities={uniqueAuthorities}
+
+                    {/* Type */}
+                    <div className="text-[13px] leading-[18px] font-medium font-oracle text-[#646462]">
+                      <TypeFilter
+                        typeFilter={typeFilter}
+                        setTypeFilter={setTypeFilter}
+                        uniqueTypes={uniqueTypes}
                       />
                     </div>
-                    <div className="text-[13px] leading-[18px] font-semibold font-['Inter'] text-[#646462] relative">
+
+                    {/* Agency */}
+                    <div className="text-[13px] leading-[18px] font-medium font-oracle text-[#646462] relative">
+                      Agency
+                    </div>
+
+                    {/* Status */}
+                    <div className="text-[13px] leading-[18px] font-medium font-oracle text-[#646462]">
                       <StatusFilter
                         statusFilter={statusFilter}
                         setStatusFilter={setStatusFilter}
                         uniqueStatuses={uniqueStatuses}
                       />
                     </div>
-                    <div className="text-[13px] leading-[18px] font-semibold font-['Inter'] text-[#646462] relative">
+
+                    {/* Filing Date */}
+                    <div className="text-[13px] leading-[18px] font-medium font-oracle text-[#646462] relative">
                       <DateFilter
                         dateRangeFilter={dateRangeFilter}
                         setDateRangeFilter={setDateRangeFilter}
                         label="Filing Date"
                       />
                     </div>
+
+                    {/* Menu */}
+                    <div />
                   </div>
 
                   <div className="divide-y divide-[#E4E5E1]">
                     {filteredFilings.length === 0 ? (
-                      // Simple left-aligned empty state like Documents page
-                      <div className="py-4 text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
-                        {searchText ? 
-                          'No filings match your search' : 
-                          `You don't have any ${activeTab === 'upcoming' ? 'upcoming' : 'completed'} filings`
-                        }
+                      // New centered empty state
+                      <div className="flex flex-col items-center justify-center py-16 px-4">
+                        <div className="w-8 h-8 mb-4 text-[#646462]">
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="32" 
+                            height="32" 
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.984375 5.9863281 A 1.0001 1.0001 0 0 0 11 7 L 11 13 A 1.0001 1.0001 0 1 0 13 13 L 13 7 A 1.0001 1.0001 0 0 0 11.984375 5.9863281 z M 12 16 A 1 1 0 0 0 12 18 A 1 1 0 0 0 12 16 z" />
+                          </svg>
+                        </div>
+                        <h3 className="text-[16px] leading-[24px] font-medium text-[#1A1A1A] mb-1">
+                          {searchText ? 'No filings match your search' : 'No filings yet'}
+                        </h3>
+                        <p className="text-[14px] leading-[20px] text-[#646462]">
+                          {searchText 
+                            ? 'Try adjusting your search or filters'
+                            : `You don't have any ${activeTab === 'upcoming' ? 'upcoming' : 'completed'} filings`
+                          }
+                        </p>
                       </div>
                     ) : (
                       filteredFilings.map(filing => (
-                          <div 
-                            key={filing.id}
+                        <div 
+                          key={filing.id}
                           className={`grid ${
-                            activeTab === 'completed'
-                              ? 'grid-cols-[24px_2fr_1fr_1fr_1fr_32px]'
-                              : 'grid-cols-[24px_2fr_1fr_1fr_1fr_32px]'
-                          } gap-4 h-[42px] items-center relative group cursor-pointer`}
-                            onClick={() => {
-                              setSelectedFiling(filing);
-                              setIsModalOpen(true);
-                            }}
+                            activeTab === 'upcoming'
+                              ? 'grid-cols-[2fr_1fr_1fr_1fr_1fr_32px]'
+                              : 'grid-cols-[24px_2fr_1fr_1fr_1fr_1fr_32px]'
+                          } gap-4 h-[42px] items-center relative group cursor-pointer hover:bg-[#F7F7F6] transition-colors px-4 -mx-4`}
+                          onClick={() => {
+                            setSelectedFiling(filing);
+                            setIsModalOpen(true);
+                          }}
                           onMouseEnter={() => setHoveredRowId(filing.id)}
                           onMouseLeave={() => setHoveredRowId(null)}
                         >
-                          {/* Checkbox cell */}
-                          <div 
-                            className="w-4 relative z-10 flex items-center opacity-0 group-hover:opacity-100 [&:has(input:checked)]:opacity-100 transition-opacity" 
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <div className="relative w-4 h-4">
-                              <input
-                                type="checkbox"
-                                className="peer absolute opacity-0 w-4 h-4 cursor-pointer z-10"
-                                checked={selectedFilings.has(filing.id)}
-                                onChange={(e) => {
-                                  setSelectedFilings(prev => {
-                                    const next = new Set(prev);
-                                    if (next.has(filing.id)) {
-                                      next.delete(filing.id);
-                                    } else {
-                                      next.add(filing.id);
-                                    }
-                                    return next;
-                                  });
-                                }}
-                              />
-                              <div className="absolute inset-0 border border-[#E4E5E1] rounded-[4px] bg-white peer-hover:border-[#1A1A1A] peer-checked:bg-[#1A1A1A] peer-checked:border-[#1A1A1A] transition-all" />
-                              <svg 
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
-                                viewBox="0 0 12 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path 
-                                  d="M2.5 6L5 8.5L9.5 4"
-                                  stroke="white"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
+                          {/* Only show checkbox in completed tab */}
+                          {activeTab === 'completed' && (
+                            <div 
+                              className="w-4 relative z-10 flex items-center opacity-0 group-hover:opacity-100 [&:has(input:checked)]:opacity-100 transition-opacity"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                            >
+                              <div className="relative w-4 h-4">
+                                <input
+                                  type="checkbox"
+                                  className="peer absolute opacity-0 w-4 h-4 cursor-pointer z-10"
+                                  checked={selectedFilings.has(filing.id)}
+                                  onChange={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedFilings(prev => {
+                                      const next = new Set(prev);
+                                      if (next.has(filing.id)) {
+                                        next.delete(filing.id);
+                                      } else {
+                                        next.add(filing.id);
+                                      }
+                                      return next;
+                                    });
+                                  }}
                                 />
-                              </svg>
+                                <div className="absolute inset-0 border border-[#E4E5E1] rounded-[4px] bg-white peer-hover:border-[#1A1A1A] peer-checked:bg-[#1A1A1A] peer-checked:border-[#1A1A1A] transition-all" />
+                                <svg 
+                                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                                  viewBox="0 0 12 12"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path 
+                                    d="M2.5 6L5 8.5L9.5 4"
+                                    stroke="white"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </div>
                             </div>
-                          </div>
+                          )}
 
-                          {/* Update hover background to match Documents */}
-                          <div className="absolute inset-x-[-8px] h-[34px] top-1/2 -translate-y-1/2 rounded-md group-hover:bg-white/80 transition-colors" />
-                          
-                            <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
+                          <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
                             <span className="block">
                               {filing.name}
                             </span>
-                            </div>
-                            <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
-                              {filing.authority}
-                            </div>
-                            <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
-                            <span className={`inline-block px-2 py-0.5 rounded-[6px] font-['Inter'] font-[450] text-[13px] leading-[18px] ${
+                          </div>
+                          <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
+                            {filing.type ? (
+                              <span className="inline-block px-2 py-0.5 rounded-[6px] bg-[#F7F7F6] text-[#1A1A1A] font-oracle font-[450] text-[13px] leading-[18px]">
+                                {filing.type}
+                              </span>
+                            ) : '—'}
+                          </div>
+                          <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
+                            {filing.authority}
+                          </div>
+                          <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
+                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[6px] font-oracle font-[450] text-[13px] leading-[18px] ${
                               filing.status === 'filed' 
                                 ? 'bg-[#B6F2E3] text-[#181818]'
                                 : filing.status === 'on_track'
                                   ? 'bg-[#E1EFFF] text-[#181818]'
-                                : filing.status === 'action_needed'
-                                  ? 'bg-[#F2B8B6] text-[#181818]'
-                                : ''
+                                  : filing.status === 'action_needed'
+                                    ? 'bg-[#F2B8B6] text-[#181818]'
+                                    : ''
                             }`}>
+                              {filing.status === 'filed' && (
+                                <svg 
+                                  xmlns="http://www.w3.org/2000/svg" 
+                                  width="14" 
+                                  height="14" 
+                                  viewBox="0 0 24 24"
+                                  className="fill-[#181818]"
+                                >
+                                  <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 15.980469 8.9902344 A 1.0001 1.0001 0 0 0 15.292969 9.2929688 L 11 13.585938 L 8.7070312 11.292969 A 1.0001 1.0001 0 1 0 7.2929688 12.707031 L 10.292969 15.707031 A 1.0001 1.0001 0 0 0 11.707031 15.707031 L 16.707031 10.707031 A 1.0001 1.0001 0 0 0 15.980469 8.9902344 z" />
+                                </svg>
+                              )}
+                              {filing.status === 'on_track' && (
+                                <svg 
+                                  xmlns="http://www.w3.org/2000/svg" 
+                                  width="14" 
+                                  height="14" 
+                                  viewBox="0 0 24 24"
+                                  className="fill-[#181818]"
+                                >
+                                  <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 12.46875 4.9863281 A 1.0001 1.0001 0 0 0 11.503906 5.9160156 L 11.003906 11.916016 A 1.0001 1.0001 0 0 0 11.417969 12.814453 L 14.917969 15.314453 A 1.0010463 1.0010463 0 0 0 16.082031 13.685547 L 13.042969 11.517578 L 13.496094 6.0839844 A 1.0001 1.0001 0 0 0 12.46875 4.9863281 z" />
+                                </svg>
+                              )}
+                              {filing.status === 'action_needed' && (
+                                <svg 
+                                  xmlns="http://www.w3.org/2000/svg" 
+                                  width="14" 
+                                  height="14" 
+                                  viewBox="0 0 24 24"
+                                  className="fill-[#181818]"
+                                >
+                                  <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.984375 5.9863281 A 1.0001 1.0001 0 0 0 11 7 L 11 13 A 1.0001 1.0001 0 1 0 13 13 L 13 7 A 1.0001 1.0001 0 0 0 11.984375 5.9863281 z M 12 16 A 1 1 0 0 0 12 18 A 1 1 0 0 0 12 16 z" />
+                                </svg>
+                              )}
                               {formatStatus(filing.status)}
                             </span>
                           </div>
-                          <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] relative">
+                          <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] relative">
                             {formatDate(filing.date)}
                           </div>
 
@@ -606,13 +645,13 @@ export default function FilingsPage() {
                           </div>
                         </div>
                       ))
-                      )}
+                    )}
                   </div>
                 </div>
               </div>
-            </main>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
       
       <FilingModal
@@ -623,6 +662,6 @@ export default function FilingsPage() {
           setSelectedFiling(null);
         }}
       />
-    </>
+    </div>
   )
 } 

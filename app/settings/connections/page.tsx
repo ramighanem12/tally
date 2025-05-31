@@ -19,7 +19,7 @@ export default function Connections() {
   })
   
   // Common input classes for reuse
-  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
+  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
 
   const tabs = [
     { id: 'apps', label: 'Apps' },
@@ -121,13 +121,13 @@ export default function Connections() {
       {/* Fixed Header */}
       <div className="px-6 pr-[24px] py-4 border-b border-[#E4E5E1]">
         <div className="flex justify-between items-center">
-          <h1 className="text-[20px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+          <h1 className="text-[20px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
             Connections
           </h1>
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-['Inter'] font-semibold text-[14px] leading-[16px] transition-colors flex items-center gap-2"
+            className="bg-[#1A1A1A] hover:bg-[#333333] text-white px-4 h-[32px] rounded-full font-oracle font-[500] text-[14px] leading-[16px] transition-colors flex items-center gap-2"
           >
             {isSaving ? (
               <>
@@ -163,7 +163,7 @@ export default function Connections() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-3 text-[14px] leading-[20px] font-medium font-['Inter'] border-b-2 transition-colors ${
+              className={`py-3 text-[14px] leading-[20px] font-medium font-oracle border-b-2 transition-colors ${
                 activeTab === tab.id 
                   ? 'border-[#1A1A1A] text-[#1A1A1A]' 
                   : 'border-transparent text-[#646462] hover:text-[#1A1A1A]'
@@ -180,13 +180,13 @@ export default function Connections() {
         <div className="px-6 pr-[24px] py-4">
           {activeTab === 'apps' && (
             <div className="space-y-6">
-              <h2 className="text-[18px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+              <h2 className="text-[18px] leading-[24px] font-[500] font-oracle text-[#1A1A1A]">
                 Apps
               </h2>
 
               {appCategories.map((category) => (
                 <div key={category.name} className="space-y-4">
-                  <h3 className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#646462]">
+                  <h3 className="text-[14px] leading-[20px] font-medium font-oracle text-[#646462]">
                     {category.name}
                   </h3>
 
@@ -206,11 +206,11 @@ export default function Connections() {
                               className="text-gray-600"
                             />
                             <div>
-                              <p className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                              <p className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                                 {app.name}
                               </p>
                               {app.status === 'connected' && (
-                                <p className="text-[13px] leading-[18px] font-['Inter'] text-[#646462] mt-0.5">
+                                <p className="text-[13px] leading-[18px] font-oracle text-[#646462] mt-0.5">
                                   Connected
                                 </p>
                               )}
@@ -246,10 +246,10 @@ export default function Connections() {
                 <div className="flex gap-24">
                   {/* Left side */}
                   <div className="flex-1">
-                    <h2 className="text-[16px] leading-[24px] font-medium font-['Inter'] text-[#1A1A1A] mb-2">
+                    <h2 className="text-[16px] leading-[24px] font-medium font-oracle text-[#1A1A1A] mb-2">
                       Webhook settings
                     </h2>
-                    <p className="text-[14px] leading-[20px] font-['Inter'] text-[#646462]">
+                    <p className="text-[14px] leading-[20px] font-oracle text-[#646462]">
                       Configure webhook endpoints for real-time updates.
                     </p>
                   </div>
@@ -258,7 +258,7 @@ export default function Connections() {
                   <div className="flex-1">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                        <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                           Webhook URL
                         </label>
                         <input 

@@ -168,4 +168,10 @@ textarea::-webkit-scrollbar-thumb {
 
 .page-content {
   will-change: transform, opacity;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 } 

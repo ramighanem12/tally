@@ -99,7 +99,7 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
       >
         {/* Fixed header */}
         <div className="flex-none flex justify-between items-center px-6 py-5 border-b border-[#E4E5E1]">
-          <h2 className="text-[18px] leading-[24px] font-semibold font-['Inter'] text-[#1A1A1A]">
+          <h2 className="text-[18px] leading-[24px] font-medium font-oracle text-[#1A1A1A]">
             Event details
           </h2>
           <button 
@@ -128,11 +128,11 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
             <div className="bg-white border border-[#E4E5E1] rounded-lg p-4">
               {/* Event name as subheader */}
               <div className="mb-4 -mx-4">
-                <div className="flex items-center gap-2 px-4 pb-3">
-                  <h3 className="text-[16px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+                <div className="flex items-center gap-2 px-4 pb-4">
+                  <h3 className="text-[16px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                     {event.name}
                   </h3>
-                  <span className={`inline-block px-2 py-0.5 rounded-[6px] font-['Inter'] font-[450] text-[13px] leading-[18px] ${getStatusStyles(event.status)}`}>
+                  <span className={`inline-block px-2 py-0.5 rounded-[6px] font-oracle font-[450] text-[13px] leading-[18px] ${getStatusStyles(event.status)}`}>
                     {formatStatus(event.status)}
                   </span>
                 </div>
@@ -142,36 +142,36 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
               {/* Grid of fields */}
               <div className="grid grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                  <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                     Type
                   </label>
-                  <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+                  <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
                     {event.type}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                  <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                     Period
                   </label>
-                  <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+                  <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
                     {event.period}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                  <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                     Due date
                   </label>
-                  <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+                  <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
                     {formatDate(event.dueDate)}
                   </div>
                 </div>
                 {/* Render additional details in the grid */}
                 {event.details && Object.entries(event.details).map(([key, value]) => (
                   <div key={key}>
-                    <label className="block text-[14px] leading-[16px] font-medium font-['Inter'] text-[#1A1A1A] mb-1">
+                    <label className="block text-[14px] leading-[16px] font-medium font-oracle text-[#1A1A1A] mb-1">
                       {key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                     </label>
-                    <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+                    <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
                       {value.toString()}
                     </div>
                   </div>
@@ -184,8 +184,8 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
               <div className="bg-white border border-[#E4E5E1] rounded-lg p-4">
                 {/* Subheader */}
                 <div className="mb-4 -mx-4">
-                  <div className="px-4 pb-3">
-                    <h3 className="text-[16px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+                  <div className="px-4 pb-4">
+                    <h3 className="text-[16px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                       Description
                     </h3>
                   </div>
@@ -193,7 +193,7 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
                 </div>
 
                 {/* Description content */}
-                <div className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+                <div className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
                   {event.description}
                 </div>
               </div>
@@ -204,8 +204,8 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
               <div className="bg-white border border-[#E4E5E1] rounded-lg p-4">
                 {/* Subheader */}
                 <div className="mb-4 -mx-4">
-                  <div className="px-4 pb-3">
-                    <h3 className="text-[16px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+                  <div className="px-4 pb-4">
+                    <h3 className="text-[16px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                       Resources
                     </h3>
                   </div>
@@ -218,7 +218,7 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
                     <a
                       key={index}
                       href={resource.url}
-                      className="block text-[14px] leading-[20px] font-normal font-['Inter'] text-[#006ADC] hover:underline"
+                      className="block text-[14px] leading-[20px] font-normal font-oracle text-[#006ADC] hover:underline"
                     >
                       {resource.title}
                     </a>
@@ -232,8 +232,8 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
               <div className="bg-white border border-[#E4E5E1] rounded-lg p-4">
                 {/* Subheader */}
                 <div className="mb-4 -mx-4">
-                  <div className="px-4 pb-3">
-                    <h3 className="text-[16px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+                  <div className="px-4 pb-4">
+                    <h3 className="text-[16px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                       Steps to take
                     </h3>
                   </div>
@@ -245,7 +245,7 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
                   {event.steps.map((step, index) => (
                     <li 
                       key={index}
-                      className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A] pl-1"
+                      className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A] pl-1"
                     >
                       {step}
                     </li>
@@ -258,14 +258,14 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
             <div className="bg-white border border-[#E4E5E1] rounded-lg p-4">
               {/* Subheader */}
               <div className="mb-4 -mx-4">
-                <div className="px-4 pb-3">
+                <div className="px-4 pb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-[16px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+                      <h3 className="text-[16px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                         Notes
                       </h3>
                       <div className="relative group">
-                        <span className="inline-block px-2 py-0.5 rounded-[6px] bg-[#EFEFED] text-[#1A1A1A] font-['Inter'] font-[450] text-[12.5px] leading-[18px] flex items-center gap-1">
+                        <span className="inline-block px-2 py-0.5 rounded-[6px] bg-[#EFEFED] text-[#1A1A1A] font-oracle font-[450] text-[12.5px] leading-[18px] flex items-center gap-1">
                           <svg 
                             xmlns="http://www.w3.org/2000/svg" 
                             width="12" 
@@ -275,13 +275,13 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
                           >
                             <path d="M23.895,11.553C23.72,11.204,19.531,3,12,3S0.28,11.204,0.105,11.553c-0.141,0.282-0.141,0.613,0,0.895	C0.28,12.796,4.469,21,12,21s11.72-8.204,11.895-8.553C24.035,12.166,24.035,11.834,23.895,11.553z M12,16c-2.209,0-4-1.791-4-4	c0-2.209,1.791-4,4-4s4,1.791,4,4C16,14.209,14.209,16,12,16z" />
                           </svg>
-                          Visible to you and Heritage
+                          Visible to you and Clarity
                         </span>
 
                         {/* Tooltip */}
                         <div className="absolute left-0 bottom-[calc(100%+4px)] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-10">
                           <div className="w-[280px] bg-white rounded-lg shadow-lg border border-[#E4E5E1] p-3">
-                            <div className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A]">
+                            <div className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A]">
                               Your notes will be visible to your advisor and tax concierge team.
                             </div>
                           </div>
@@ -289,7 +289,7 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
                       </div>
                     </div>
                     {saveStatus && (
-                      <span className="text-[14px] leading-[16px] font-normal font-['Inter'] text-[#646462] flex items-center gap-1">
+                      <span className="text-[14px] leading-[16px] font-normal font-oracle text-[#646462] flex items-center gap-1">
                         {saveStatus === 'saving' ? 'Saving...' : (
                           <>
                             <svg 
@@ -318,7 +318,7 @@ export default function EventModal({ event, isOpen, onClose }: EventModalProps) 
                     setNotes(e.target.value);
                     autoSave(e.target.value);
                   }}
-                  className="w-full min-h-[120px] px-3 py-2 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] placeholder-[#646462] resize-none focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
+                  className="w-full min-h-[120px] px-3 py-2 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] placeholder-[#646462] resize-none focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
                   placeholder="Add your notes here..."
                 />
               </div>

@@ -33,40 +33,39 @@ const PlanSettings = () => {
     setActiveTooltip(null)
   }
 
-  // Common input classes for reuse
-  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-['Inter'] text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
+  // Update input classes to use oracle font
+  const inputClasses = "w-full h-[34px] px-3 rounded-lg border border-[#E4E5E1] text-[14px] leading-[20px] font-oracle text-[#1A1A1A] focus:border-[#BBBDB7] focus:ring-1 focus:ring-[#BBBDB7] focus:outline-none"
 
   return (
     <div className="grid grid-cols-2 gap-3">
       {/* Business settings card */}
-      <div className="bg-white rounded-[10px] border border-[#E4E5E1] px-4">
+      <div className="bg-white rounded-[14px] overflow-hidden">
         {/* Subheader */}
-        <div className="py-4">
-          <h2 className="text-[15px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+        <div className="px-6 py-4">
+          <h2 className="text-[15px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
             Business settings
           </h2>
         </div>
-        <div className="-mx-4 border-b border-[#E4E5E1]" />
-        {/* Content goes here */}
-        <div className="py-4">
-          <p className="text-[14px] leading-[20px] font-normal font-['Inter'] text-[#1A1A1A]">
+        <div className="border-b border-[#E4E5E1]" />
+        {/* Content */}
+        <div className="px-6 py-4">
+          <p className="text-[14px] leading-[20px] font-normal font-oracle text-[#1A1A1A]">
             Content goes here
           </p>
         </div>
       </div>
 
       {/* Assumptions card */}
-      <div className="bg-white rounded-[10px] border border-[#E4E5E1] px-4">
+      <div className="bg-white rounded-[14px] overflow-hidden">
         {/* Subheader */}
-        <div className="py-4">
-          <h2 className="text-[15px] leading-[20px] font-semibold font-['Inter'] text-[#1A1A1A]">
+        <div className="px-6 py-4">
+          <h2 className="text-[15px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
             Assumptions
           </h2>
         </div>
-        <div className="-mx-4 border-b border-[#E4E5E1]" />
-
+        <div className="border-b border-[#E4E5E1]" />
         {/* Form fields */}
-        <div className="py-4 space-y-6">
+        <div className="px-6 py-4 space-y-6">
           {/* Estimated Revenue and Expenses Row */}
           <div className="grid grid-cols-2 gap-4">
             {/* Estimated Revenue */}
@@ -75,7 +74,7 @@ const PlanSettings = () => {
                 htmlFor="estimatedRevenue"
                 className="flex items-center gap-1 mb-1"
               >
-                <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                   Estimated revenue
                 </span>
                 <div 
@@ -105,7 +104,7 @@ const PlanSettings = () => {
                         transform: 'translate(-50%, -100%)'
                       }}
                     >
-                      <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                      <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                         The business's estimated annual revenue for tax planning purposes
                       </p>
                     </div>
@@ -131,7 +130,7 @@ const PlanSettings = () => {
                 htmlFor="estimatedExpenses"
                 className="flex items-center gap-1 mb-1"
               >
-                <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+                <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                   Estimated expenses
                 </span>
                 <div 
@@ -161,7 +160,7 @@ const PlanSettings = () => {
                         transform: 'translate(-50%, -100%)'
                       }}
                     >
-                      <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                      <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                         The business's estimated annual expenses
                       </p>
                     </div>
@@ -188,7 +187,7 @@ const PlanSettings = () => {
               htmlFor="entityType"
               className="flex items-center gap-1 mb-1"
             >
-              <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+              <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                 Entity type
               </span>
               <div 
@@ -218,7 +217,7 @@ const PlanSettings = () => {
                       transform: 'translate(-50%, -100%)'
                     }}
                   >
-                    <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                    <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                       Your business's legal structure. To change this, update your business details in settings.
                     </p>
                   </div>
@@ -259,7 +258,7 @@ const PlanSettings = () => {
                     transform: 'translate(-50%, -100%)'
                   }}
                 >
-                  <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                  <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                     This field is inferred from your business details in Settings
                   </p>
                 </div>
@@ -273,7 +272,7 @@ const PlanSettings = () => {
               htmlFor="filingState"
               className="flex items-center gap-1 mb-1"
             >
-              <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+              <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                 Filing state
               </span>
               <div 
@@ -303,7 +302,7 @@ const PlanSettings = () => {
                       transform: 'translate(-50%, -100%)'
                     }}
                   >
-                    <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                    <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                       The business's state for tax filing purposes
                     </p>
                   </div>
@@ -332,7 +331,7 @@ const PlanSettings = () => {
               htmlFor="numberOfEmployees"
               className="flex items-center gap-1 mb-1"
             >
-              <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+              <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                 Number of employees
               </span>
               <div 
@@ -362,7 +361,7 @@ const PlanSettings = () => {
                       transform: 'translate(-50%, -100%)'
                     }}
                   >
-                    <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                    <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                       The business's total number of W2 employees and 1099 contractors
                     </p>
                   </div>
@@ -387,7 +386,7 @@ const PlanSettings = () => {
               htmlFor="fiscalPeriod"
               className="flex items-center gap-1 mb-1"
             >
-              <span className="text-[14px] leading-[20px] font-medium font-['Inter'] text-[#1A1A1A]">
+              <span className="text-[14px] leading-[20px] font-medium font-oracle text-[#1A1A1A]">
                 Fiscal period
               </span>
               <div 
@@ -417,7 +416,7 @@ const PlanSettings = () => {
                       transform: 'translate(-50%, -100%)'
                     }}
                   >
-                    <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                    <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                       The business's fiscal year period for tax purposes
                     </p>
                   </div>
@@ -458,7 +457,7 @@ const PlanSettings = () => {
                     transform: 'translate(-50%, -100%)'
                   }}
                 >
-                  <p className="text-[13px] leading-[18px] font-normal font-['Inter'] text-[#1A1A1A] whitespace-normal">
+                  <p className="text-[13px] leading-[18px] font-normal font-oracle text-[#1A1A1A] whitespace-normal">
                     This field is inferred from your business details in Settings
                   </p>
                 </div>
