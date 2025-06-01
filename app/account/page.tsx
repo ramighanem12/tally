@@ -2,11 +2,14 @@
 import { useState } from 'react'
 import { Country, State } from 'country-state-city'
 import CopilotNavigation from "../components/CopilotNavigation"
+import { toast } from 'sonner'
 
 export default function AccountPage() {
-  const [activeTab, setActiveTab] = useState<'account' | 'payments'>('account')
+  const [activeTab, setActiveTab] = useState<'account' | 'qualifications' | 'payments'>('account')
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingAddress, setIsEditingAddress] = useState(false)
+  const [isEditingPayout, setIsEditingPayout] = useState(false)
+  const [isEditingLanguages, setIsEditingLanguages] = useState(false)
   const [formData, setFormData] = useState({
     firstName: 'John',
     lastName: 'Doe',
@@ -19,6 +22,16 @@ export default function AccountPage() {
     state: 'NY',
     zipCode: '10001',
     country: 'US'
+  })
+  const [payoutData, setPayoutData] = useState({
+    bankName: 'Chase Bank',
+    accountType: 'Checking',
+    accountNumber: '****1234',
+    routingNumber: '****5678'
+  })
+  const [languageData, setLanguageData] = useState({
+    primaryLanguage: 'English',
+    secondaryLanguages: ['Spanish', 'French']
   })
 
   // Get all countries
@@ -40,6 +53,7 @@ export default function AccountPage() {
   const handleSave = () => {
     // TODO: Save data to API
     setIsEditing(false)
+    toast.success('Personal information updated successfully')
   }
 
   const handleCancel = () => {
@@ -50,6 +64,7 @@ export default function AccountPage() {
   const handleSaveAddress = () => {
     // TODO: Save address data to API
     setIsEditingAddress(false)
+    toast.success('Address updated successfully')
   }
 
   const handleCancelAddress = () => {
@@ -63,6 +78,42 @@ export default function AccountPage() {
       country: countryCode,
       state: '' // Reset state when country changes
     })
+  }
+
+  const handleSavePayout = () => {
+    // TODO: Save payout data to API
+    setIsEditingPayout(false)
+    toast.success('Payout method updated successfully')
+  }
+
+  const handleCancelPayout = () => {
+    // Reset payout data if needed
+    setIsEditingPayout(false)
+  }
+
+  const handleSaveLanguages = () => {
+    // TODO: Save language data to API
+    setIsEditingLanguages(false)
+    toast.success('Language preferences updated successfully')
+  }
+
+  const handleCancelLanguages = () => {
+    // Reset language data if needed
+    setIsEditingLanguages(false)
+  }
+
+  const availableLanguages = [
+    'English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 
+    'Chinese (Mandarin)', 'Japanese', 'Korean', 'Arabic', 'Russian', 'Hindi'
+  ]
+
+  const handleSecondaryLanguageToggle = (language: string) => {
+    setLanguageData(prev => ({
+      ...prev,
+      secondaryLanguages: prev.secondaryLanguages.includes(language)
+        ? prev.secondaryLanguages.filter(lang => lang !== language)
+        : [...prev.secondaryLanguages, language]
+    }))
   }
 
   return (
@@ -98,6 +149,19 @@ export default function AccountPage() {
                 )}
               </button>
               <button
+                onClick={() => setActiveTab('qualifications')}
+                className={`pb-3 text-[14px] font-medium transition-colors relative ${
+                  activeTab === 'qualifications'
+                    ? 'text-[#1A1A1A]'
+                    : 'text-gray-500 hover:text-[#1A1A1A]'
+                }`}
+              >
+                Qualifications
+                {activeTab === 'qualifications' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]" />
+                )}
+              </button>
+              <button
                 onClick={() => setActiveTab('payments')}
                 className={`pb-3 text-[14px] font-medium transition-colors relative ${
                   activeTab === 'payments'
@@ -118,16 +182,16 @@ export default function AccountPage() {
             {activeTab === 'account' && (
               <div className="space-y-4">
                 {/* Personal Information Card */}
-                <div className="bg-gray-50 rounded-lg p-6 relative">
+                <div className="bg-gray-100 rounded-lg p-6 relative">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-[#1A1A1A]">Personal Information</h3>
+                    <h3 className="text-lg font-semibold text-[#1A1A1A]">Personal information</h3>
                     {!isEditing ? (
                       <button
                         onClick={() => setIsEditing(true)}
                         className="p-1.5 hover:bg-gray-200 rounded-md transition-colors"
                       >
-                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                       </button>
                     ) : (
@@ -210,7 +274,7 @@ export default function AccountPage() {
                 </div>
 
                 {/* Address Card */}
-                <div className="bg-gray-50 rounded-lg p-6 relative">
+                <div className="bg-gray-100 rounded-lg p-6 relative">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-[#1A1A1A]">Address</h3>
                     {!isEditingAddress ? (
@@ -218,8 +282,8 @@ export default function AccountPage() {
                         onClick={() => setIsEditingAddress(true)}
                         className="p-1.5 hover:bg-gray-200 rounded-md transition-colors"
                       >
-                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                       </button>
                     ) : (
@@ -338,13 +402,220 @@ export default function AccountPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Language Preferences Card */}
+                <div className="bg-gray-100 rounded-lg p-6 relative">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[#1A1A1A]">Language preferences</h3>
+                    {!isEditingLanguages ? (
+                      <button
+                        onClick={() => setIsEditingLanguages(true)}
+                        className="p-1.5 hover:bg-gray-200 rounded-md transition-colors"
+                      >
+                        <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                    ) : (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleCancelLanguages}
+                          className="px-3 py-1.5 text-[13px] font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleSaveLanguages}
+                          className="px-3 py-1.5 text-[13px] font-medium bg-[#1A1A1A] text-white rounded-md hover:bg-gray-800 transition-colors"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-[13px] text-gray-500 mb-1">Primary language</div>
+                      {isEditingLanguages ? (
+                        <div className="relative">
+                          <select
+                            value={languageData.primaryLanguage}
+                            onChange={(e) => setLanguageData({...languageData, primaryLanguage: e.target.value})}
+                            className="w-full px-3 py-2 pr-8 text-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                          >
+                            {availableLanguages.map((language) => (
+                              <option key={language} value={language}>
+                                {language}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-[14px] text-[#1A1A1A] font-medium">{languageData.primaryLanguage}</div>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <div className="text-[13px] text-gray-500 mb-2">Secondary languages</div>
+                      {isEditingLanguages ? (
+                        <div className="space-y-2">
+                          {availableLanguages
+                            .filter(lang => lang !== languageData.primaryLanguage)
+                            .map((language) => (
+                            <label key={language} className="flex items-center gap-3 cursor-pointer group">
+                              <div className="relative">
+                                <input
+                                  type="checkbox"
+                                  checked={languageData.secondaryLanguages.includes(language)}
+                                  onChange={() => handleSecondaryLanguageToggle(language)}
+                                  className="sr-only"
+                                />
+                                <div className={`w-4 h-4 rounded transition-all duration-200 ${
+                                  languageData.secondaryLanguages.includes(language)
+                                    ? 'bg-[#1A1A1A] border-2 border-[#1A1A1A]'
+                                    : 'bg-white border border-gray-300 group-hover:border-gray-400'
+                                }`}>
+                                  {languageData.secondaryLanguages.includes(language) && (
+                                    <svg className="w-3 h-3 text-white absolute top-0.5 left-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  )}
+                                </div>
+                              </div>
+                              <span className="text-[14px] text-[#1A1A1A] group-hover:text-gray-700 transition-colors">{language}</span>
+                            </label>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {languageData.secondaryLanguages.length > 0 ? (
+                            languageData.secondaryLanguages.map((language) => (
+                              <span
+                                key={language}
+                                className="inline-flex items-center px-2.5 py-0.5 rounded text-[13px] font-medium bg-gray-200 text-gray-700"
+                              >
+                                {language}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-[14px] text-gray-500">None selected</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'qualifications' && (
+              <div className="space-y-4">
+                {/* Qualifications content will go here */}
+                <p className="text-gray-500">Qualifications content...</p>
               </div>
             )}
             
             {activeTab === 'payments' && (
-              <div>
-                {/* Payments content will go here */}
-                <p className="text-gray-500">Payment methods content...</p>
+              <div className="space-y-4">
+                {/* Payout Method Card */}
+                <div className="bg-gray-100 rounded-lg p-6 relative">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[#1A1A1A]">Payout method</h3>
+                    {!isEditingPayout ? (
+                      <button
+                        onClick={() => setIsEditingPayout(true)}
+                        className="p-1.5 hover:bg-gray-200 rounded-md transition-colors"
+                      >
+                        <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                    ) : (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleCancelPayout}
+                          className="px-3 py-1.5 text-[13px] font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleSavePayout}
+                          className="px-3 py-1.5 text-[13px] font-medium bg-[#1A1A1A] text-white rounded-md hover:bg-gray-800 transition-colors"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <div className="text-[13px] text-gray-500 mb-1">Bank Name</div>
+                        {isEditingPayout ? (
+                          <input
+                            type="text"
+                            value={payoutData.bankName}
+                            onChange={(e) => setPayoutData({...payoutData, bankName: e.target.value})}
+                            className="w-full px-3 py-2 text-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                        ) : (
+                          <div className="text-[14px] text-[#1A1A1A] font-medium">{payoutData.bankName}</div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-[13px] text-gray-500 mb-1">Account Type</div>
+                        {isEditingPayout ? (
+                          <select
+                            value={payoutData.accountType}
+                            onChange={(e) => setPayoutData({...payoutData, accountType: e.target.value})}
+                            className="w-full px-3 py-2 text-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          >
+                            <option value="Checking">Checking</option>
+                            <option value="Savings">Savings</option>
+                          </select>
+                        ) : (
+                          <div className="text-[14px] text-[#1A1A1A] font-medium">{payoutData.accountType}</div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <div className="text-[13px] text-gray-500 mb-1">Account Number</div>
+                        {isEditingPayout ? (
+                          <input
+                            type="text"
+                            value={payoutData.accountNumber}
+                            onChange={(e) => setPayoutData({...payoutData, accountNumber: e.target.value})}
+                            className="w-full px-3 py-2 text-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                        ) : (
+                          <div className="text-[14px] text-[#1A1A1A] font-medium">{payoutData.accountNumber}</div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-[13px] text-gray-500 mb-1">Routing Number</div>
+                        {isEditingPayout ? (
+                          <input
+                            type="text"
+                            value={payoutData.routingNumber}
+                            onChange={(e) => setPayoutData({...payoutData, routingNumber: e.target.value})}
+                            className="w-full px-3 py-2 text-[14px] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                        ) : (
+                          <div className="text-[14px] text-[#1A1A1A] font-medium">{payoutData.routingNumber}</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

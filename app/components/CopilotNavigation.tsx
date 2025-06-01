@@ -9,7 +9,8 @@ type SelectedTab =
   | 'activity'
   | 'referrals'
   | 'account'
-  | 'payouts';
+  | 'payouts'
+  | 'assessments';
 
 export default function CopilotNavigation({ 
   selectedTab = 'projects'
@@ -83,6 +84,17 @@ export default function CopilotNavigation({
             }`}
           >
             Payouts
+          </button>
+
+          <button 
+            onClick={() => router.push('/assessments')}
+            className={`w-full text-left px-3 py-2 text-[14px] font-medium rounded-md transition-colors ${
+              selectedTab === 'assessments' 
+                ? 'text-[#1A1A1A] bg-[#E5E9E9]'
+                : 'text-[#1A1A1A] hover:bg-[#E5E9E9]'
+            }`}
+          >
+            Assessments
           </button>
 
           <button 

@@ -27,6 +27,15 @@ export default function PayoutsPage() {
     })
   }, [payoutsSubTab])
 
+  // Calculate counts for each tab
+  const pendingPayoutsCount = useMemo(() => {
+    return payouts.filter(payout => payout.status === 'pending').length
+  }, [])
+
+  const paidPayoutsCount = useMemo(() => {
+    return payouts.filter(payout => payout.status === 'paid').length
+  }, [])
+
   // Payout pagination logic - use filtered payouts
   const payoutTotalPages = Math.ceil(filteredPayouts.length / rowsPerPage)
   const payoutStartIndex = (payoutCurrentPage - 1) * rowsPerPage
@@ -109,7 +118,7 @@ export default function PayoutsPage() {
                       : 'text-gray-500 hover:text-[#1A1A1A]'
                   }`}
                 >
-                  Pending
+                  Pending ({pendingPayoutsCount})
                   {payoutsSubTab === 'pending' && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]" />
                   )}
@@ -122,7 +131,7 @@ export default function PayoutsPage() {
                       : 'text-gray-500 hover:text-[#1A1A1A]'
                   }`}
                 >
-                  Paid
+                  Paid ({paidPayoutsCount})
                   {payoutsSubTab === 'paid' && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]" />
                   )}

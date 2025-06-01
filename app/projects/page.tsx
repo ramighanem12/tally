@@ -51,25 +51,11 @@ export default function ProjectsPage() {
       )
     },
     {
-      id: 5,
-      name: "Forum (English)",
-      timePerTask: "15m",
-      hourlyRate: "$17.50",
-      gradient: "bg-gradient-to-br from-gray-500 to-gray-700",
-      dailyCompleted: 1,
-      dailyLimit: 6,
-      icon: (
-        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      )
-    },
-    {
       id: 3,
       name: "Podcast (Spanish 🇪🇸)",
       timePerTask: "15m",
       hourlyRate: "$17.50",
-      gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700",
+      gradient: "bg-gradient-to-br from-red-500 to-red-700",
       dailyCompleted: 10,
       dailyLimit: 10,
       icon: (
@@ -81,7 +67,22 @@ export default function ProjectsPage() {
   ]
 
   // Mock available projects data
-  const availableProjects: Project[] = []
+  const availableProjects: Project[] = [
+    {
+      id: 5,
+      name: "Forum (English)",
+      timePerTask: "15m",
+      hourlyRate: "$17.50",
+      gradient: "bg-gradient-to-br from-gray-500 to-gray-700",
+      dailyCompleted: 0,
+      dailyLimit: 6,
+      icon: (
+        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      )
+    }
+  ]
 
   // Calculate accurate counts
   const currentProjectsCount = currentProjects.length

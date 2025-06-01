@@ -178,6 +178,19 @@ export default function ActivityPage() {
     }
   }, [allRows])
 
+  // Calculate counts for each tab
+  const pendingCount = useMemo(() => {
+    return allRows.filter(row => 
+      row.paidOn === 'Pending' || row.qualityDisplay === 'Pending' || row.earnings === 'Pending'
+    ).length
+  }, [allRows])
+
+  const completedCount = useMemo(() => {
+    return allRows.filter(row => 
+      row.paidOn !== 'Pending' && row.qualityDisplay !== 'Pending' && row.earnings !== 'Pending'
+    ).length
+  }, [allRows])
+
   const totalPages = Math.ceil(filteredRows.length / rowsPerPage)
   const startIndex = (currentPage - 1) * rowsPerPage
   const endIndex = startIndex + rowsPerPage
@@ -301,7 +314,10 @@ export default function ActivityPage() {
                 <div className="flex items-center gap-2">
                   <div className="text-xl sm:text-2xl font-semibold text-[#1A1A1A]">{allActivitiesMetrics.goodCallRatio}%</div>
                   <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[13.5px] font-medium bg-white text-green-700 border border-green-200">
-                    +5% w/w
+                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    5% from last week
                   </span>
                 </div>
               </div>
@@ -324,7 +340,7 @@ export default function ActivityPage() {
                       : 'text-gray-500 hover:text-[#1A1A1A]'
                   }`}
                 >
-                  Pending review
+                  Pending review ({pendingCount})
                   {activitiesSubTab === 'pending' && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]" />
                   )}
@@ -337,7 +353,7 @@ export default function ActivityPage() {
                       : 'text-gray-500 hover:text-[#1A1A1A]'
                   }`}
                 >
-                  Completed
+                  Completed ({completedCount})
                   {activitiesSubTab === 'completed' && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#1A1A1A]" />
                   )}
