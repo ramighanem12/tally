@@ -46,8 +46,21 @@ export default function Auth() {
         <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/20 p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl mb-6 shadow-lg shadow-blue-500/25">
-              <span className="text-white font-bold text-2xl">D</span>
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 shadow-lg">
+              <svg 
+                width="64" 
+                height="64" 
+                viewBox="0 0 500 500" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-16 w-16"
+              >
+                <rect width="500" height="500" rx="100" fill="#93D0E5"/>
+                <path d="M250 422L165.148 379.574C145.795 369.897 130.103 354.205 120.426 334.852L78 250L162.852 292.426C182.205 302.103 197.897 317.795 207.574 337.148L250 422Z" fill="#00285A"/>
+                <path d="M422 250L379.574 334.852C369.897 354.205 354.205 369.897 334.852 379.574L250 422L292.426 337.148C302.103 317.795 317.795 302.103 337.148 292.426L422 250Z" fill="#00285A"/>
+                <path d="M250 78L165.148 120.426C145.795 130.103 130.103 145.795 120.426 165.148L78 250L135.333 221.333L162.852 207.574C182.205 197.897 197.897 182.205 207.574 162.852L250 78Z" fill="#00285A"/>
+                <path d="M250 78L292.426 162.852C302.103 182.205 317.795 197.897 337.148 207.574L422 250L379.574 165.148C369.897 145.795 354.205 130.103 334.852 120.426L250 78Z" fill="#00285A"/>
+              </svg>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
               Welcome back
@@ -162,7 +175,8 @@ export default function Auth() {
             </button>
           </form>
 
-          {/* Footer */}
+          {/* Footer - Commented out for now */}
+          {/* 
           <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
             <p className="text-center text-sm text-slate-600 dark:text-slate-400">
               Need access?{' '}
@@ -171,6 +185,7 @@ export default function Auth() {
               </button>
             </p>
           </div>
+          */}
         </div>
 
         {/* Decorative Elements */}
