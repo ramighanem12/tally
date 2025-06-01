@@ -13,8 +13,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Modus",
-  description: "Modern Tax Advisor for Small Businesses",
+  title: "Dialogue",
+  description: "Audio Data Collection for AI Models",
   icons: {
     icon: '/favicon.ico',
   },
