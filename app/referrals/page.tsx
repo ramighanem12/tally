@@ -128,7 +128,7 @@ export default function ReferralsPage() {
                   </button>
                   
                   {showOtherOptions && (
-                    <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-sm py-2 px-2 z-10 min-w-max">
+                    <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-sm py-2 px-2 z-10 min-w-max animate-in fade-in-0 zoom-in-95 duration-200 slide-in-from-top-2">
                       <button
                         onClick={() => {
                           shareToWhatsApp()
