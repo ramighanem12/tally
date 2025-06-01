@@ -27,42 +27,54 @@ export default function ProjectsPage() {
       hourlyRate: "$25.00",
       originalRate: "$17.50",
       hasIncentive: true,
-      gradient: "bg-blue-600",
+      gradient: "bg-gradient-to-br from-blue-500 to-blue-700",
       dailyCompleted: 3,
       dailyLimit: 5,
       icon: (
+        <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M 4 3 C 2.9 3 2 3.9 2 5 L 2 17 L 5 14 L 8 14 L 8 17 C 8 18.1 8.9 19 10 19 L 19 19 L 22 22 L 22 10 C 22 8.9 21.1 8 20 8 L 16 8 L 16 5 C 16 3.9 15.1 3 14 3 L 4 3 z M 4 5 L 14 5 L 14 12 L 4 12 L 4 5 z M 16 10 L 20 10 L 20 17 L 10 17 L 10 14 L 14 14 C 15.1 14 16 13.1 16 12 L 16 10 z"/>
+        </svg>
+      )
+    },
+    {
+      id: 4,
+      name: "Monologue (English)",
+      timePerTask: "15m",
+      hourlyRate: "$17.50",
+      gradient: "bg-gradient-to-br from-teal-500 to-teal-700",
+      dailyCompleted: 2,
+      dailyLimit: 4,
+      icon: (
         <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a3 3 0 11-6 0 3 3 0 016 0zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+      )
+    },
+    {
+      id: 5,
+      name: "Forum (English)",
+      timePerTask: "15m",
+      hourlyRate: "$17.50",
+      gradient: "bg-gradient-to-br from-gray-500 to-gray-700",
+      dailyCompleted: 1,
+      dailyLimit: 6,
+      icon: (
+        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 715.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
       )
     },
     {
       id: 3,
-      name: "Spanish 🇪🇸",
+      name: "Podcast (Spanish 🇪🇸)",
       timePerTask: "15m",
       hourlyRate: "$17.50",
-      gradient: "bg-emerald-600",
-      dailyCompleted: 7,
+      gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700",
+      dailyCompleted: 10,
       dailyLimit: 10,
       icon: (
         <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      )
-    },
-    {
-      id: 1,
-      name: "Assistant (English)",
-      timePerTask: "15m",
-      hourlyRate: "$22.50",
-      originalRate: "$17.50",
-      hasIncentive: true,
-      gradient: "bg-slate-600",
-      dailyCompleted: 15,
-      dailyLimit: 15,
-      icon: (
-        <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
       )
     }
@@ -155,9 +167,20 @@ export default function ProjectsPage() {
                         <div className="p-3 sm:p-4 space-y-2">
                           {/* Project name and daily limit */}
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0">
-                            <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#1A1A1A] truncate">
-                              {project.name}
-                            </h3>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#1A1A1A] truncate">
+                                {project.name}
+                              </h3>
+                              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[11px] sm:text-[12px] font-medium bg-gray-100 text-gray-700 whitespace-nowrap">
+                                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                                {project.name === "Podcast (English)" && "2-3"}
+                                {project.name === "Monologue (English)" && "1"}
+                                {project.name === "Forum (English)" && "3-5"}
+                                {project.name === "Podcast (Spanish 🇪🇸)" && "2"}
+                              </div>
+                            </div>
                             <div className={`flex items-center gap-1 text-[11px] sm:text-[13px] whitespace-nowrap ${
                               project.dailyCompleted >= project.dailyLimit 
                                 ? 'text-gray-400 opacity-60' 
@@ -178,7 +201,7 @@ export default function ProjectsPage() {
                               <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.585938 4.9199219 L 11.503906 5.9160156 L 10.957031 12.482422 L 14.917969 15.314453 L 15.732422 15.894531 L 16.894531 14.267578 L 16.082031 13.685547 L 13.042969 11.517578 L 13.496094 6.0839844 L 13.580078 5.0859375 L 11.585938 4.9199219 z"/>
                               </svg>
-                              <span>est. {project.timePerTask} per activity</span>
+                              <span>est. {project.timePerTask} per session</span>
                             </div>
                             <div className="flex items-center gap-2">
                               {project.hasIncentive ? (
@@ -229,9 +252,20 @@ export default function ProjectsPage() {
                         <div className="p-3 sm:p-4 space-y-2">
                           {/* Project name and daily limit */}
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0">
-                            <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#1A1A1A] truncate">
-                              {project.name}
-                            </h3>
+                            <div className="flex items-center gap-2">
+                              <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#1A1A1A] truncate">
+                                {project.name}
+                              </h3>
+                              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[11px] sm:text-[12px] font-medium bg-gray-100 text-gray-700 whitespace-nowrap">
+                                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                                {project.name === "Podcast (English)" && "2-3"}
+                                {project.name === "Monologue (English)" && "1"}
+                                {project.name === "Forum (English)" && "3-5"}
+                                {project.name === "Podcast (Spanish 🇪🇸)" && "2"}
+                              </div>
+                            </div>
                             <div className="flex items-center gap-1 text-[11px] sm:text-[13px] whitespace-nowrap text-gray-600">
                               <span>Daily limit: {project.dailyCompleted}/{project.dailyLimit}</span>
                             </div>
@@ -243,7 +277,7 @@ export default function ProjectsPage() {
                               <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.585938 4.9199219 L 11.503906 5.9160156 L 10.957031 12.482422 L 14.917969 15.314453 L 15.732422 15.894531 L 16.894531 14.267578 L 16.082031 13.685547 L 13.042969 11.517578 L 13.496094 6.0839844 L 13.580078 5.0859375 L 11.585938 4.9199219 z"/>
                               </svg>
-                              <span>est. {project.timePerTask} per activity</span>
+                              <span>est. {project.timePerTask} per session</span>
                             </div>
                             <div className="flex items-center gap-2">
                               {project.hasIncentive ? (
