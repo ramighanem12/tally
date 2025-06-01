@@ -130,10 +130,10 @@ export default function ProjectsPage() {
                 {currentProjects.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                     {currentProjects.map((project) => (
-                      <div key={project.id} className={`bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden transition-shadow ${
+                      <div key={project.id} className={`bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-200 ${
                         project.dailyCompleted >= project.dailyLimit 
                           ? 'cursor-not-allowed' 
-                          : 'hover:shadow-md cursor-pointer'
+                          : 'hover:shadow-md hover:bg-gray-50 cursor-pointer'
                       }`}>
                         {/* Solid color top section with icon */}
                         <div className={`${project.gradient} h-32 sm:h-44 flex items-center justify-center relative ${
@@ -178,14 +178,14 @@ export default function ProjectsPage() {
                               <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.585938 4.9199219 L 11.503906 5.9160156 L 10.957031 12.482422 L 14.917969 15.314453 L 15.732422 15.894531 L 16.894531 14.267578 L 16.082031 13.685547 L 13.042969 11.517578 L 13.496094 6.0839844 L 13.580078 5.0859375 L 11.585938 4.9199219 z"/>
                               </svg>
-                              <span>est. {project.timePerTask} per task</span>
+                              <span>est. {project.timePerTask} per activity</span>
                             </div>
                             <div className="flex items-center gap-2">
                               {project.hasIncentive ? (
                                 <>
                                   <span className="font-medium line-through text-gray-400 text-[10px] sm:text-[12px]">{project.originalRate}/hr</span>
                                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] sm:text-[12px] font-medium bg-yellow-100 text-yellow-800">
-                                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 24 24">
                                       <path d="M 9 1 A 1.0001 1.0001 0 0 0 8.0722656 1.6289062 L 4.0722656 11.628906 A 1.0001 1.0001 0 0 0 5 13 L 7.65625 13 L 5.0429688 21.712891 A 1.0001 1.0001 0 0 0 6.6503906 22.759766 L 20.650391 10.759766 A 1.0001 1.0001 0 0 0 20 9 L 16.617188 9 L 19.894531 2.4472656 A 1.0001 1.0001 0 0 0 19 1 L 9 1 z"/>
                                     </svg>
                                     {project.hourlyRate}/hr
@@ -217,7 +217,7 @@ export default function ProjectsPage() {
                 {availableProjects.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                     {availableProjects.map((project) => (
-                      <div key={project.id} className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
+                      <div key={project.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md hover:bg-gray-50 transition-all duration-200 cursor-pointer">
                         {/* Solid color top section with icon */}
                         <div className={`${project.gradient} h-32 sm:h-44 flex items-center justify-center relative`}>
                           <div className="scale-75 sm:scale-100">
@@ -243,14 +243,14 @@ export default function ProjectsPage() {
                               <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M 12 2 C 6.4889941 2 2 6.4889982 2 12 C 2 17.511002 6.4889941 22 12 22 C 17.511006 22 22 17.511002 22 12 C 22 6.4889982 17.511006 2 12 2 z M 12 4 C 16.430126 4 20 7.5698765 20 12 C 20 16.430123 16.430126 20 12 20 C 7.5698737 20 4 16.430123 4 12 C 4 7.5698765 7.5698737 4 12 4 z M 11.585938 4.9199219 L 11.503906 5.9160156 L 10.957031 12.482422 L 14.917969 15.314453 L 15.732422 15.894531 L 16.894531 14.267578 L 16.082031 13.685547 L 13.042969 11.517578 L 13.496094 6.0839844 L 13.580078 5.0859375 L 11.585938 4.9199219 z"/>
                               </svg>
-                              <span>est. {project.timePerTask} per task</span>
+                              <span>est. {project.timePerTask} per activity</span>
                             </div>
                             <div className="flex items-center gap-2">
                               {project.hasIncentive ? (
                                 <>
                                   <span className="font-medium line-through text-gray-400 text-[10px] sm:text-[12px]">{project.originalRate}/hr</span>
                                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] sm:text-[12px] font-medium bg-yellow-100 text-yellow-800">
-                                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 24 24">
                                       <path d="M 9 1 A 1.0001 1.0001 0 0 0 8.0722656 1.6289062 L 4.0722656 11.628906 A 1.0001 1.0001 0 0 0 5 13 L 7.65625 13 L 5.0429688 21.712891 A 1.0001 1.0001 0 0 0 6.6503906 22.759766 L 20.650391 10.759766 A 1.0001 1.0001 0 0 0 20 9 L 16.617188 9 L 19.894531 2.4472656 A 1.0001 1.0001 0 0 0 19 1 L 9 1 z"/>
                                     </svg>
                                     {project.hourlyRate}/hr
