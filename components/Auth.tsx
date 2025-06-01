@@ -37,16 +37,16 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 flex items-center justify-center p-4">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-800 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] dark:[mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))]" />
       
       <div className="relative w-full max-w-md">
         {/* Main Card */}
-        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/20 p-8">
+        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-white/20 dark:border-slate-700/50 rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/20 p-6">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 shadow-lg">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg">
               <svg 
                 width="64" 
                 height="64" 
@@ -62,17 +62,17 @@ export default function Auth() {
                 <path d="M250 78L292.426 162.852C302.103 182.205 317.795 197.897 337.148 207.574L422 250L379.574 165.148C369.897 145.795 354.205 130.103 334.852 120.426L250 78Z" fill="#00285A"/>
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
               Welcome back
             </h1>
             <p className="text-slate-600 dark:text-slate-400">
-              Sign in to access your dashboard
+              Sign in to access your account
             </p>
           </div>
 
           {/* Error Alert */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl">
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -87,7 +87,7 @@ export default function Auth() {
           )}
 
           {/* Login Form */}
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-4">
             {/* Email Field */}
             <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -102,9 +102,9 @@ export default function Auth() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 dark:border-slate-600 rounded-xl
+                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl
                     bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400
-                    focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400
+                    focus:outline-none focus:ring-2 focus:ring-slate-500/20 focus:border-slate-500 dark:focus:border-slate-400
                     transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   placeholder="Enter your email"
                   required
@@ -126,9 +126,9 @@ export default function Auth() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-12 py-3 border border-slate-200 dark:border-slate-600 rounded-xl
+                  className="block w-full pl-10 pr-12 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl
                     bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400
-                    focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400
+                    focus:outline-none focus:ring-2 focus:ring-slate-500/20 focus:border-slate-500 dark:focus:border-slate-400
                     transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   placeholder="Enter your password"
                   required
@@ -151,11 +151,11 @@ export default function Auth() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 
-                hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-xl
-                focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-2 dark:focus:ring-offset-slate-800
-                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-500 disabled:hover:to-blue-600
-                transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02]
+              className="w-full flex items-center justify-center px-4 py-2.5 bg-slate-900 dark:bg-slate-800
+                hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-medium rounded-xl
+                focus:outline-none focus:ring-2 focus:ring-slate-500/20 focus:ring-offset-2 dark:focus:ring-offset-slate-800
+                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-slate-900 dark:disabled:hover:bg-slate-800
+                transition-all duration-200 shadow-lg shadow-slate-900/25 hover:shadow-slate-900/40 hover:scale-[1.02]
                 active:scale-[0.98]"
             >
               {loading ? (
@@ -175,6 +175,16 @@ export default function Auth() {
             </button>
           </form>
 
+          {/* Sign up section */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Don't have an account?{' '}
+              <button className="font-semibold text-slate-900 dark:text-white underline hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
+                Sign up.
+              </button>
+            </p>
+          </div>
+
           {/* Footer - Commented out for now */}
           {/* 
           <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
@@ -188,9 +198,11 @@ export default function Auth() {
           */}
         </div>
 
-        {/* Decorative Elements */}
+        {/* Decorative Elements - Commented out */}
+        {/* 
         <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl" />
         <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-purple-500/10 rounded-full blur-xl" />
+        */}
       </div>
     </div>
   )
